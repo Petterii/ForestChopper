@@ -5,9 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -17,18 +21,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ContactListener.WorldContactListener;
 import com.mygdx.game.CreateWorldFromTiled;
 import com.mygdx.game.ForestChopper;
-import com.mygdx.game.Items.Coin;
+
 import com.mygdx.game.Items.Items;
 import com.mygdx.game.Parallax.ParallaxBackground;
-import com.mygdx.game.TiledHelpers.B2TiledWorldCreater;
-import com.mygdx.game.Units.Enemies.Screecher;
+
 import com.mygdx.game.Units.Enemy;
 import com.mygdx.game.Units.Player;
 
@@ -70,7 +79,7 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer b2dr;
-    private B2TiledWorldCreater tiledCreate;
+
 
     private OrthographicCamera gamecam;
 
@@ -89,16 +98,12 @@ public class PlayScreen implements Screen {
    // private Texture attackTextureIcon;
     private Sprite attackIcon;
     private Hud topHud;
-
     private Array<Enemy> enemies;
     private Array<Items> items;
-    private boolean createCoin;
-
     private AssetManager manager;
     private ParallaxBackground parallaxBackground;
 
     private Stage stage;
-
     public ParallaxBackground getParallaxBackground() {
         return parallaxBackground;
     }
@@ -124,7 +129,6 @@ public class PlayScreen implements Screen {
     public PlayScreen(ForestChopper game) {
         enemies = new Array<Enemy>();
         items = new Array<Items>();
-        createCoin = false;
         initParallax();
         manager = game.getManager();
 
@@ -146,7 +150,7 @@ public class PlayScreen implements Screen {
         world = new World(new Vector2(0,-10), true);
         b2dr = new Box2DDebugRenderer();
 
-        tiledCreate = new B2TiledWorldCreater(this);
+
         new CreateWorldFromTiled(this);
         player = new Player(this, new Texture(TEXTURE_MINITOUR4STANCES), new Texture(TEXTURE_DEADPLAYER));
 
@@ -155,15 +159,16 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
 
 
+        chat = new ChatBubble();
+        chat.show("Hello Sir", 10f);
     }
+
+    private ChatBubble chat;
+
 
     @Override
     public void show() {
 
-    }
-
-    public Hud getTopHud() {
-        return topHud;
     }
 
     private void initButtons() {
@@ -214,7 +219,8 @@ public class PlayScreen implements Screen {
             if (!item.destroyed)
                 item.draw(game.batch);
         }
-       game.batch.end();
+
+        game.batch.end();
 
 
        // drawing the UI buttons
@@ -223,11 +229,13 @@ public class PlayScreen implements Screen {
         hudBatch.draw(leftButton,0,0);
         hudBatch.draw(rightButton,rightButton.getWidth()*2,0);
         hudBatch.draw(attackIcon,V_WIDTH - (attackIcon.getWidth()*2),attackIcon.getHeight());
-
         hudBatch.end();
 
         topHud.stage.draw();
 
+        chat.draw(game.batch,ForestChopper.V_WIDTH/2,(ForestChopper.V_HEIGHT/2) - 20);
+
+        // if player failed and goes to a gameover/newgame screen
         if (GameOver()){
             game.setScreen(new NewGameScreen(game));
             dispose();
@@ -253,11 +261,11 @@ public class PlayScreen implements Screen {
                 item.update(delta);
         }
 
-
         topHud.update(delta);
         player.update(delta);
 
 
+        // camera follows player until player dies
         if (player.getState() != Player.State.DIEING) {
             gamecam.position.x = player.b2body.getPosition().x;
         }
@@ -265,29 +273,14 @@ public class PlayScreen implements Screen {
         tileRenderer.setView(gamecam);
     }
 
-    public Array<Items> getItems() {
-        return items;
+    private void handleInputs() {
+        handleKeyboardInputs();
+        handleTouchInputs();
     }
 
-    private void handleInputs() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            player.b2body.applyLinearImpulse(new Vector2(0,4f),player.b2body.getWorldCenter(),true);
-        }
+    private void handleTouchInputs() {
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
-
-            player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
-            player.destroySword();
-
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f,0f),player.b2body.getWorldCenter(),true);
-
-        }
-
-
-
-
+        // for loop because it can have multiple touches
         for (int i = 0; i < 20 ; i++) {
             if (Gdx.input.isTouched(i)){
 
@@ -319,9 +312,23 @@ public class PlayScreen implements Screen {
             }
         }
 
+    }
 
+    private void handleKeyboardInputs() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+            player.b2body.applyLinearImpulse(new Vector2(0,4f),player.b2body.getWorldCenter(),true);
+        }
 
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
 
+            player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
+            player.destroySword();
+
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
+            player.b2body.applyLinearImpulse(new Vector2(-0.1f,0f),player.b2body.getWorldCenter(),true);
+
+        }
     }
 
     @Override
@@ -355,10 +362,7 @@ public class PlayScreen implements Screen {
         topHud.dispose();
         enemies.clear();
         items.clear();
-
-       stage.dispose();
-
-
+        stage.dispose();
      }
 
     public TiledMap getMap() {
@@ -384,6 +388,10 @@ public class PlayScreen implements Screen {
 
     public AssetManager getManager() {
         return manager;
+    }
+
+    public Array<Items> getItems() {
+        return items;
     }
 
 }
