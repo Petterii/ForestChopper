@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="60" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="31">
+ <tileset firstgid="1" source="tileset_darkforest.tsx"/>
+ <layer id="1" name="background" width="60" height="13">
+  <data encoding="base64" compression="zlib">
+   eJztwYEAAAAAw6D5U1/gCFUBAAB8AwwwAAE=
+  </data>
+ </layer>
+ <layer id="2" name="graphics" width="60" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4A2gIMInAbE6QPlQCoDMSJwGRCXM+AOj8EAiI0TNQKYmPAYCMAExGxQGoRhcYIuzkSiuYTCQ40KbicHEBMPAxkfxABSygkNIDYhAoPigw2KOYhgwzA+AMvHbAyo+ZoJhxxymsOVJtHlYGwQMCLRvxJk4CAsGAaEBgAT6196YpjbkMUYBoG76IlHmn9HIgYA7XdBfw==
+  </data>
+ </layer>
+ <objectgroup id="3" name="ground">
+  <object id="1" x="0" y="144" width="288" height="16"/>
+  <object id="3" x="288" y="96" width="160" height="16"/>
+  <object id="5" x="448" y="128" width="208" height="16"/>
+  <object id="6" x="496" y="48" width="144" height="16"/>
+  <object id="7" x="624" y="64" width="144" height="32"/>
+  <object id="8" x="496" y="64" width="128" height="16"/>
+  <object id="18" x="768" y="128" width="192" height="16"/>
+  <object id="25" x="272" y="96" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="objects">
+  <object id="9" x="640" y="32" width="32" height="32"/>
+  <object id="10" x="336" y="64" width="32" height="32"/>
+  <object id="11" x="96" y="112" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="5" name="enemies">
+  <object id="12" x="192" y="128" width="16" height="16"/>
+  <object id="14" x="400" y="80" width="16" height="16"/>
+  <object id="15" x="576" y="32" width="16" height="16"/>
+  <object id="16" x="720" y="48" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="6" name="walls">
+  <object id="20" x="272" y="112" width="16" height="32"/>
+  <object id="24" x="432" y="112" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="7" name="enemywalls">
+  <object id="26" x="480" y="32" width="16" height="16"/>
+  <object id="27" x="768" y="48" width="16" height="16"/>
+  <object id="28" x="656" y="112" width="16" height="16"/>
+ </objectgroup>
+</map>
