@@ -10,14 +10,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
+import com.mygdx.game.ForestChopper;
+
+import static com.mygdx.game.ForestChopper.PPM;
 
 public class ChatBubble
 {
     private Label textLabel;
     private BitmapFont font;
     private Label.LabelStyle lStyle;
-    private int scaledWidth = 0;
-    private int scaledHeight = 0;
+    private float scaledWidth = 0;
+    private float scaledHeight = 0;
     private Timer.Task currentTask;
     private Texture bkg;
 
@@ -44,6 +47,7 @@ public class ChatBubble
 
     public void show(String text, float duration)
     {
+
         if(currentTask.isScheduled())currentTask.cancel();
         textLabel.setText(text);
         textLabel.pack();
@@ -55,21 +59,27 @@ public class ChatBubble
 
     public void show(String text)
     {
+
         if(currentTask.isScheduled())currentTask.cancel();
         textLabel.setText(text);
         textLabel.pack();
         textLabel.setVisible(true);
-        scaledHeight = (int)textLabel.getPrefHeight();
-        scaledWidth = (int)textLabel.getWidth()/2;
+        scaledHeight = (textLabel.getPrefHeight());
+        scaledWidth = (textLabel.getWidth()/2);
         Timer.schedule(currentTask,(float)(text.length()*0.1));
     }
 
-    public void draw(SpriteBatch batch, float x, float y)
+    public boolean draw(SpriteBatch batch, float x, float y)
     {
-        if(!textLabel.isVisible())return;
-        textLabel.setPosition(x - scaledWidth, y + scaledHeight);
+        if(!textLabel.isVisible())return false;
+        textLabel.setPosition(x,y);
         batch.begin();
         textLabel.draw(batch, 1);
         batch.end();
+        return true;
+    }
+
+    public boolean isVisible(){
+        return textLabel.isVisible();
     }
 }

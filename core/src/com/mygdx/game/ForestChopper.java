@@ -2,11 +2,14 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.mygdx.game.Screens.HighScoreScreen;
+import com.mygdx.game.Screens.LeaderboardScreen;
 import com.mygdx.game.Screens.NewGameScreen;
 import com.mygdx.game.Screens.PlayScreen;
 
@@ -76,7 +79,8 @@ public class ForestChopper extends Game {
 		manager.load(UI_BUTTONS, Texture.class);
 		manager.load(UI_ATTACKICON, Texture.class);
 		manager.finishLoading();
-		setScreen(new NewGameScreen(this));
+
+		setScreen( new com.example.gdx.scene2d.LevelPickerScreen(this));
 	}
 
 	@Override

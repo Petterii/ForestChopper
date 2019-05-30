@@ -1,4 +1,4 @@
-package com.mygdx.game.TiledHelpers;
+package com.mygdx.game.Helpers;
 
 import com.mygdx.game.Screens.PlayScreen;
 

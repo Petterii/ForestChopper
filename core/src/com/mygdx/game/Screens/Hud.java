@@ -75,6 +75,10 @@ public class Hud implements Disposable {
         healthLabel.setText(String.format("%03d", health));
     }
 
+    public static int getScore() {
+        return score;
+    }
+
     public void update(float dt) {
         timeCount += dt;
         if (timeCount >= 1){

@@ -5,13 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -21,13 +18,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -46,7 +38,7 @@ import static com.mygdx.game.ForestChopper.V_HEIGHT;
 import static com.mygdx.game.ForestChopper.V_WIDTH;
 
 
-public class PlayScreen implements Screen {
+public class PlayScreen implements Screen{
 
     // assets manager files to load
     public static final String SOUND_COINAPEAR = "sound/coin_apear.mp3";
@@ -79,8 +71,6 @@ public class PlayScreen implements Screen {
 
     private World world;
     private Box2DDebugRenderer b2dr;
-
-
     private OrthographicCamera gamecam;
 
     private TmxMapLoader mapLoad;
@@ -95,13 +85,19 @@ public class PlayScreen implements Screen {
     private Sprite rightButton;
 
     private OrthographicCamera hudCam;
-   // private Texture attackTextureIcon;
     private Sprite attackIcon;
     private Hud topHud;
+
+    // store our enemies,items and assets files
     private Array<Enemy> enemies;
     private Array<Items> items;
     private AssetManager manager;
     private ParallaxBackground parallaxBackground;
+
+    // some chatbubble handling variables
+    private static int leftDialog;
+    private boolean leftChatisActive;
+    private boolean noChat;
 
     private Stage stage;
     public ParallaxBackground getParallaxBackground() {
@@ -131,6 +127,8 @@ public class PlayScreen implements Screen {
         items = new Array<Items>();
         initParallax();
         manager = game.getManager();
+        leftDialog = 0;
+        leftChatisActive = true;
 
         topHud = new Hud(game.batch);
         hudBatch = new SpriteBatch();
@@ -158,12 +156,15 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-
-        chat = new ChatBubble();
-        chat.show("Hello Sir", 10f);
+        rightChat = new ChatBubble();
+        leftChat = new ChatBubble();
+        //rightChat.show("Puny Creature",4f);
+        leftChat.show("Hello Sir", 2f);
+        NextDialog();
     }
 
-    private ChatBubble chat;
+    private ChatBubble leftChat;
+    private ChatBubble rightChat;
 
 
     @Override
@@ -212,12 +213,10 @@ public class PlayScreen implements Screen {
         game.batch.begin();
         player.draw(game.batch);
         for (Enemy enemy : enemies) {
-            if (!enemy.isToBedeleted())
-                enemy.draw(game.batch);
+            if (!enemy.isToBedeleted()) enemy.draw(game.batch);
         }
         for (Items item : items) {
-            if (!item.destroyed)
-                item.draw(game.batch);
+            if (!item.destroyed) item.draw(game.batch);
         }
 
         game.batch.end();
@@ -233,13 +232,49 @@ public class PlayScreen implements Screen {
 
         topHud.stage.draw();
 
-        chat.draw(game.batch,ForestChopper.V_WIDTH/2,(ForestChopper.V_HEIGHT/2) - 20);
+        drawChat();
+        handleDialogs(); // new potential dialog
 
         // if player failed and goes to a gameover/newgame screen
         if (GameOver()){
-            game.setScreen(new NewGameScreen(game));
+            game.setScreen(new HighScoreScreen(game, Hud.getScore()));
             dispose();
         }
+    }
+
+    private void drawChat() {
+        if (leftChatisActive && !noChat)
+            leftChat.draw(game.batch,8 , ForestChopper.V_HEIGHT/2);
+        else if (!noChat)
+            rightChat.draw(game.batch,(ForestChopper.V_WIDTH/3)*2, ForestChopper.V_HEIGHT/2);
+    }
+
+    private void handleDialogs() {
+        if (!leftChat.isVisible() && !rightChat.isVisible()) {
+            switch (leftDialog){
+                case 1: leftDialog =2;
+                        leftChat.show("Chop That Big BOY Tree", 2f);
+                        break;
+                case 2: leftDialog = 3;
+                        rightChat.show("Puny Creature.",2f);
+                        leftChatisActive = false;
+                        break;
+                case 3: leftDialog = 4;
+                        rightChat.show("ORKS KILLLLLL!!",2f);
+                        leftChatisActive = false;
+                        break;
+                default: noChat = true;
+
+            }
+        }
+
+
+    }
+
+
+
+    public static void NextDialog() {
+        leftDialog++;
     }
 
     private boolean GameOver(){
@@ -248,9 +283,13 @@ public class PlayScreen implements Screen {
         return false;
     }
 
-    private void update(float delta) {
-        world.step(1/60f,6,2);
+    private boolean paused;
 
+    private void update(float delta) {
+        if (!paused)
+        world.step(1/60f,6,2);
+        else
+            world.step(0, 6,2);
         parallaxBackground.setSpeed(player.b2body.getLinearVelocity().x);
         for (Enemy enemy : enemies) {
             if (!enemy.isToBedeleted())
@@ -298,6 +337,7 @@ public class PlayScreen implements Screen {
                     player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
 
                 }else if (attackIcon.getBoundingRectangle().contains(xKord,yKord)){
+                 //   paused = !paused;
                     player.attack();
                 }
                 else if (!leftButton.getBoundingRectangle().contains( xKord , yKord ) && !rightButton.getBoundingRectangle().contains(xKord, yKord)){
