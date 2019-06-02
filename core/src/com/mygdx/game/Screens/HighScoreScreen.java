@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -23,31 +24,25 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.mygdx.game.Helpers.Prefferences.getPreffsHighScore;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_HIGHSCOREBACKGROUND;
 
 public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
     private Viewport viewport;
     private Stage stage;
-    private Game game;
+    private ForestChopper game;
 
-    private int newScore;
-
-    int myScore1 = 100;
-    int myScore2 = 50;
-
-    Label emptyLabel;
     Label firstScore;
-    Label secondScore;
     Label firstScorepoints;
-    Label secondScorepoints;
+
+    private Texture background;
 
     private List<HighScore> highScores;
 
-    private AssetManager manager;
     public static final String bg = "pictures/environment_forestbackground_scaled.png";
 
-    public HighScoreScreen(Game game, int score,float time){
-        this(game);
+    public HighScoreScreen(ForestChopper screen, int score,float time){
+        this(screen);
         Gdx.input.getTextInput(this,"Score "+score+". Enter Name:", "","name. ex Kalle");
         newHScore = new HighScore(score,(int)time);
 
@@ -56,8 +51,8 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
 
 
-    public HighScoreScreen(Game game) {
-        //Texture bground = new Texture(bg);
+    public HighScoreScreen(ForestChopper game) {
+        background = game.getManager().get(TEXTURE_HIGHSCOREBACKGROUND);
 
         highScores = getPreffsHighScore();
 
@@ -129,7 +124,9 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+        stage.getBatch().begin();
+        stage.getBatch().draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        stage.getBatch().end();
 
         stage.draw();
     }

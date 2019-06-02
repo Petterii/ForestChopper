@@ -18,6 +18,8 @@ import static com.mygdx.game.Screens.PlayScreen.SOUND_SWORDSWING;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_WALK;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_COINSHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_DEADPLAYER;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_HIGHSCOREBACKGROUND;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVELPICKERBACKGROUND;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_MINITOUR4STANCES;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKDIEINGSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKHURT;
@@ -45,6 +47,8 @@ public class ForestChopper extends Game {
 	public static final short OBJECT_BIT = 64;
 	public static final short PLAYERSWORD_BIT = 256;
 
+	// load all the sounds and pictures that are used alot to assets manager.
+
 	private AssetManager manager;
 
 	public SpriteBatch batch;
@@ -61,7 +65,6 @@ public class ForestChopper extends Game {
 		manager.load(SOUND_COINPICKUPP, Sound.class);
 		manager.load(SOUND_COINAPEAR, Sound.class);
 
-
 		manager.load(TEXTURE_DEADPLAYER, Texture.class);
 		manager.load(TEXTURE_ORKHURT, Texture.class);
 		manager.load(TEXTURE_PLAYERHURT, Texture.class);
@@ -70,6 +73,8 @@ public class ForestChopper extends Game {
 		manager.load(TEXTURE_ORKDIEINGSPRITESHEET, Texture.class);
 		manager.load(TEXTURE_ORKSPRITESHEET, Texture.class);
 		manager.load(TEXTURE_COINSHEET, Texture.class);
+		manager.load(TEXTURE_HIGHSCOREBACKGROUND, Texture.class);
+		manager.load(TEXTURE_LEVELPICKERBACKGROUND, Texture.class);
 
 		manager.load(UI_BUTTONS, Texture.class);
 		manager.load(UI_ATTACKICON, Texture.class);

@@ -1,4 +1,4 @@
-package com.example.gdx.scene2d;
+package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -24,22 +27,33 @@ import com.mygdx.game.ForestChopper;
 import com.mygdx.game.Helpers.PagedScrollPane;
 import com.mygdx.game.Screens.PlayScreen;
 
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVELPICKERBACKGROUND;
+
 
 public class LevelPickerScreen implements Screen {
 
     private Skin skin;
     private Stage stage;
     private Table container;
-    private Game game;
+    private ForestChopper game;
     private OrthographicCamera cam;
     private Viewport viewport;
 
-    public LevelPickerScreen(Game game){
+    private Texture background;
+
+    public LevelPickerScreen(ForestChopper game){
         this.game = game;
         create();
     }
 
     public void create () {
+
+        background = game.getManager().get(TEXTURE_LEVELPICKERBACKGROUND);
+       // TextureRegion region = new TextureRegion(background, 0, 0, 2048, 1238);
+
+
+
+
         cam = new OrthographicCamera(ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
         viewport = new FitViewport(ForestChopper.V_WIDTH*2,ForestChopper.V_HEIGHT*2, cam);
 
@@ -88,6 +102,10 @@ public class LevelPickerScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
+        stage.getBatch().begin();
+        stage.getBatch().draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        stage.getBatch().end();
+
         stage.draw();
     }
 

@@ -10,18 +10,19 @@ import java.util.List;
 public abstract class Prefferences {
 
     public static void savePreffs(List<HighScore> highScores){
-        Preferences prefs = Gdx.app.getPreferences("PREFFS_HIGHSCORES");
+        Preferences prefs = Gdx.app.getPreferences("My Preferences");
         for (int i = 0; i < highScores.size(); i++) {
             prefs.putString("name"+i, highScores.get(i).getName());
             prefs.putInteger("score"+i, highScores.get(i).getScore());
             prefs.putFloat("time"+i, highScores.get(i).getTime());
         }
+        prefs.flush();
     }
 
     public static List<HighScore> getPreffsHighScore(){
         List<HighScore> highScores = new ArrayList<HighScore>();
 
-        Preferences prefs = Gdx.app.getPreferences("PREFFS_HIGHSCORES");
+        Preferences prefs = Gdx.app.getPreferences("My Preferences");
         for (int i = 0; i < 3; i++) {
             HighScore hs = new HighScore(prefs.getInteger("score"+i),
                                         (int)prefs.getFloat("time"+i));

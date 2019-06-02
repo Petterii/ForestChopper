@@ -59,6 +59,11 @@ public class PlayScreen implements Screen{
     public static final String TEXTURE_ORKDIEINGSPRITESHEET = "chars/orkdieingSpritsheet.png";
     public static final String TEXTURE_ORKSPRITESHEET = "chars/orkspritesheet.png";
     public static final String TEXTURE_COINSHEET = "chars/coinspritesheet.png";
+    public static final String TEXTURE_HIGHSCOREBACKGROUND = "pictures/highscorebackground400x208.jpg";
+    public static final String TEXTURE_LEVELPICKERBACKGROUND = "pictures/levelpicker_background400x200.jpg";
+
+
+
 
     public static final String UI_BUTTONS = "ui/leftandright.png";
     public static final String UI_ATTACKICON = "ui/Icon_attack.png";
