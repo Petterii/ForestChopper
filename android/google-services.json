@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1068229149836",
+    "firebase_url": "https://forestchopper-492fb.firebaseio.com",
+    "project_id": "forestchopper-492fb",
+    "storage_bucket": "forestchopper-492fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068229149836:android:57348865da3b9ddf",
+        "android_client_info": {
+          "package_name": "com.mygdx.pettsmaxgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1068229149836-freelure5mm9270p0jfit08u5m5nmm7b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWDM8wq-UmMQuYFxhuYHw6rtPLIWCH3xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1068229149836-freelure5mm9270p0jfit08u5m5nmm7b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
