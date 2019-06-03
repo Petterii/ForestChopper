@@ -125,7 +125,7 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.getBatch().begin();
-        stage.getBatch().draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        stage.getBatch().draw(background,0,0,ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
         stage.getBatch().end();
 
         stage.draw();

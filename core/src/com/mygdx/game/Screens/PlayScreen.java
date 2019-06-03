@@ -61,6 +61,8 @@ public class PlayScreen implements Screen{
     public static final String TEXTURE_COINSHEET = "chars/coinspritesheet.png";
     public static final String TEXTURE_HIGHSCOREBACKGROUND = "pictures/highscorebackground400x208.jpg";
     public static final String TEXTURE_LEVELPICKERBACKGROUND = "pictures/levelpicker_background400x200.jpg";
+    public static final String TEXTURE_MAINMENU = "pictures/mainmenu_screen.png";
+
 
 
 

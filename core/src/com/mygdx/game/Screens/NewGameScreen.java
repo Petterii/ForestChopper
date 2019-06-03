@@ -23,19 +23,20 @@ import com.mygdx.game.ForestChopper;
 
 import static com.mygdx.game.ForestChopper.V_HEIGHT;
 import static com.mygdx.game.ForestChopper.V_WIDTH;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_MAINMENU;
 
 public class NewGameScreen implements Screen {
 
     private Viewport viewport;
     private Stage stage;
-    private Game game;
+    private ForestChopper game;
 
 
     private AssetManager manager;
     public static final String bg = "pictures/environment_forestbackground_scaled.png";
     Texture bground;
-    public NewGameScreen(Game game) {
-        bground = new Texture(bg);
+    public NewGameScreen(ForestChopper game) {
+        bground = game.getManager().get(TEXTURE_MAINMENU);
         this.game = game;
         viewport = new FitViewport(ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT,new OrthographicCamera());
         stage = new Stage(viewport,((ForestChopper) game).batch);
@@ -72,12 +73,13 @@ public class NewGameScreen implements Screen {
             float xKord = ((float) V_WIDTH / Gdx.graphics.getWidth()) * dingosX;
             float yKord = ((float) V_HEIGHT / Gdx.graphics.getHeight()) * (Gdx.graphics.getHeight() - dingosY);
 
-            if (ForestChopper.V_WIDTH / 2 > xKord && ForestChopper.V_HEIGHT / 2 > yKord) {
-                game.setScreen(new LevelPickerScreen((ForestChopper) game));
+
+            if (ForestChopper.V_WIDTH / 2 < xKord && ForestChopper.V_HEIGHT / 2 < yKord) {
+                game.setScreen(new HighScoreScreen((ForestChopper) game));
                 dispose();
             }
-            else if (ForestChopper.V_WIDTH / 2 < xKord && ForestChopper.V_HEIGHT / 2 < yKord) {
-                game.setScreen(new HighScoreScreen((ForestChopper) game));
+            else {
+                game.setScreen(new LevelPickerScreen((ForestChopper) game));
                 dispose();
             }
         }
@@ -86,7 +88,7 @@ public class NewGameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.getBatch().begin();
-        stage.getBatch().draw(bground,0,0);
+        stage.getBatch().draw(bground,0,0,ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
         stage.getBatch().end();
 
         stage.draw();
@@ -94,7 +96,7 @@ public class NewGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width,height,false);
     }
 
     @Override
