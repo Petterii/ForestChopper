@@ -189,8 +189,11 @@ public class LevelPickerScreen implements Screen {
             System.out.println("Click: " + event.getListenerActor().getName());
             if (event.getListenerActor().getName().equals("Level1"))
                 game.setScreen(new PlayScreen((ForestChopper) game,"tile/smaller_map_60.tmx"));
-            else
+            else if(event.getListenerActor().getName().equals("Level2"))
                 game.setScreen(new PlayScreen((ForestChopper) game,"tile/level2.tmx"));
+            else if(event.getListenerActor().getName().equals("Level3"))
+                game.setScreen(new PlayScreen((ForestChopper) game,"tile/lvl3.tmx"));
+
             dispose();
             // TODO start picked level
         }

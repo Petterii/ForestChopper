@@ -9,6 +9,7 @@ import com.mygdx.game.Items.Items;
 import com.mygdx.game.Units.Enemy;
 import com.mygdx.game.Units.Player;
 
+import static com.mygdx.game.ForestChopper.ENDTREE_BIT;
 import static com.mygdx.game.ForestChopper.ENEMYWALLS_BIT;
 import static com.mygdx.game.ForestChopper.ENEMY_BIT;
 import static com.mygdx.game.ForestChopper.ITEM_BIT;
@@ -58,6 +59,13 @@ public class WorldContactListener implements ContactListener {
                     ((Enemy) fixA.getUserData()).reverseVelocity(true,false);
                 else
                     ((Enemy) fixB.getUserData()).reverseVelocity(true,false);
+                break;
+            case PLAYER_BIT | ENDTREE_BIT:
+                if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
+                    ((Player) fixA.getUserData()).chopThatTree();
+                }else {
+                    ((Player) fixB.getUserData()).chopThatTree();
+                }
                 break;
             case PLAYER_BIT | ENEMY_BIT:
                 if (fixA.getFilterData().categoryBits == PLAYER_BIT) {

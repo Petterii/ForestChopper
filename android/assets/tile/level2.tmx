@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="250" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="77">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="250" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="86">
  <tileset firstgid="1" source="tileset_darkforest.tsx"/>
+ <tileset firstgid="129" source="tree_end128x128.tsx"/>
+ <layer id="8" name="endtree" width="250" height="13">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7BZxzke9hCSVkETAAAAAAAAAAAA+GWuAwAAQGUBJO4Agg==
+  </data>
+ </layer>
  <layer id="1" name="background" width="250" height="13">
   <data encoding="base64" compression="zlib">
    eJztzjEBAAAIA6B1s38nQ+zQAxKQAAAAAAAAAAAAAMB/cx0AAGoLPlYARA==
@@ -11,6 +17,10 @@
    eJztmM9uwjAMxntkA7aJw8RlYyceYNozDcF5Am3qw88CLEUmzh8SmqR8n/RTqZM6oYnrJF0HQRAEQe1oQjwQj8Q0wB7iJ/ZZaHz6JjalOwEdtYgg1Rd0nUrGy5x4Ip6JF49d2vbEQSnT/ELQvYrjxYyN2UBtx+SBFO5ZvnUw21pcI+fKUW/EO7EiPjL4q0muuOi7U8zPu9vkRrMdKZstpcz1TC7J+VbTnqLUt3FL7DL4cclc00HxutX4y/guFee557ucb63Pv3UGH7/EXwY/LpX4fg2d+2vKGaY+LWjx3XI+5/cfem1BPF6pcc65fIicXrt4PRxzFmXKlzM0//Kef2t237mWLLPFN9frz/X6c12+mthstjIp3mvIPvZK/0P3I1o9fv+hV59P3zilnE9IX1obtjh37du1Ms7ltpyuzUvXf08dK1tZ6r3WnrQtC/IKRseigj6AS74AAKPnBwAAAADN8w8UgWjQ
   </data>
  </layer>
+ <objectgroup id="9" name="treeend">
+  <object id="78" x="3952" y="96" width="32" height="48"/>
+  <object id="82" x="3936" y="48" width="80" height="48"/>
+ </objectgroup>
  <objectgroup id="3" name="objects">
   <object id="2" x="256" y="112" width="32" height="32"/>
   <object id="3" x="544" y="48" width="32" height="32"/>
@@ -38,6 +48,9 @@
  </objectgroup>
  <objectgroup id="4" name="walls">
   <object id="76" x="2672" y="96" width="16" height="48"/>
+  <object id="77" x="290" y="-58.5"/>
+  <object id="83" x="-16" y="16" width="16" height="128"/>
+  <object id="85" x="4016" y="-48" width="16" height="192"/>
  </objectgroup>
  <objectgroup id="5" name="ground">
   <object id="1" x="0" y="144" width="4000" height="16"/>

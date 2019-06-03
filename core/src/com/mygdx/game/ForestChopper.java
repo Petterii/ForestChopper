@@ -19,6 +19,7 @@ import static com.mygdx.game.Screens.PlayScreen.SOUND_WALK;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_COINSHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_DEADPLAYER;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_HIGHSCOREBACKGROUND;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVEL3;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVELPICKERBACKGROUND;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_MAINMENU;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_MINITOUR4STANCES;
@@ -47,6 +48,9 @@ public class ForestChopper extends Game {
 	public static final short WALL_BIT = 32;
 	public static final short OBJECT_BIT = 64;
 	public static final short PLAYERSWORD_BIT = 256;
+    public static final short ENDTREE_BIT = 512;
+
+
 
 	// load all the sounds and pictures that are used alot to assets manager.
 
@@ -77,6 +81,7 @@ public class ForestChopper extends Game {
 		manager.load(TEXTURE_HIGHSCOREBACKGROUND, Texture.class);
 		manager.load(TEXTURE_LEVELPICKERBACKGROUND, Texture.class);
         manager.load(TEXTURE_MAINMENU, Texture.class);
+        manager.load(TEXTURE_LEVEL3, Texture.class);
 
 
 

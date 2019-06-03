@@ -62,7 +62,7 @@ public class PlayScreen implements Screen{
     public static final String TEXTURE_HIGHSCOREBACKGROUND = "pictures/highscorebackground400x208.jpg";
     public static final String TEXTURE_LEVELPICKERBACKGROUND = "pictures/levelpicker_background400x200.jpg";
     public static final String TEXTURE_MAINMENU = "pictures/mainmenu_screen.png";
-
+    public static final String TEXTURE_LEVEL3 = "tile/cleanforest_half.png";
 
 
 
@@ -285,6 +285,8 @@ public class PlayScreen implements Screen{
     }
 
     private boolean GameOver(){
+        if (player.currentState == Player.State.WINNING && player.getStateTimer() > 2)
+            return true;
         if (player.currentState == Player.State.DIEING && player.getStateTimer() > 3)
             return true;
         return false;

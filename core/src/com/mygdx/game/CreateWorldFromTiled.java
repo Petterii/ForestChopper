@@ -13,6 +13,7 @@ import com.mygdx.game.Items.Coin;
 import com.mygdx.game.Screens.PlayScreen;
 import com.mygdx.game.Units.Enemies.Screecher;
 
+import static com.mygdx.game.ForestChopper.ENDTREE_BIT;
 import static com.mygdx.game.ForestChopper.ENEMYWALLS_BIT;
 import static com.mygdx.game.ForestChopper.GROUND_BIT;
 import static com.mygdx.game.ForestChopper.OBJECT_BIT;
@@ -105,7 +106,23 @@ public class CreateWorldFromTiled {
 
         }
 
-        screen.getItems().add(new Coin(screen,2,0.9f));
+        for (MapObject object :
+                map.getLayers().get("treeend").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) /PPM,(rect.getY() + rect.getHeight()/2) /PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox((rect.getWidth()/2)/PPM,(rect.getHeight()/2)/PPM);
+            fdef.shape = shape;
+            fdef.filter.categoryBits = ENDTREE_BIT;
+            body.createFixture(fdef);
+
+        }
+
+        //screen.getItems().add(new Coin(screen,2,0.9f));
 
         shape.dispose();
     }

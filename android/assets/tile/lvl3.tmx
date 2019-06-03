@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="250" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="42">
+ <tileset firstgid="1" source="cleanforest_half.tsx"/>
+ <tileset firstgid="449" source="tree_end128x128.tsx"/>
+ <tileset firstgid="450" source="tileset_darkforest.tsx"/>
+ <layer id="2" name="endtree" width="250" height="13">
+  <data encoding="base64" compression="zlib">
+   eJztzkENAAAIBKCzfyqb2cGPc4MEJAAAAAAAAAAAAPBL1/UAAADYGCPmAMM=
+  </data>
+ </layer>
+ <layer id="1" name="graphics" width="250" height="13">
+  <data encoding="base64" compression="zlib">
+   eJzt2DdvFEEYxvHB5IIgMgVgYcCmIIhkU2AymNBgjE1qCF+A8AUIDaHBpiE0hAbwF8DQYoNNagCb3NjEDpEp/N9idKvRnXZ2b83M3b2P9NNq5t3ZXZ9vRrOnlEQikcTLMRzHCZx0/CwSSaFlPTbE6HeVc2hGC87nOOcRHuMJnipZG9KM/j5sRB02YTO2YKvjMWmOL9bsQGOMfle5gqu4hus5znmDt3iH98pubUgj5vqij+G+Qo/+PjRhJ3ZhN/Zgr+MxaY53kVEYjTEYi9M4EzquxhqsxTpHz+hzbNaGbDHnbVTM9UUfw30SSa5Mw3TMQDku4lLouA312I6GiGv5tg8PYu6rfdlnm/N2IHMP7ejAfTxAJ7rwsAjv61t82OfPw3wswELcxK3QcR/24wAORlzLt314EHNfbbPP9mUtSCvP8Bwv0I0evMQrvC7C+/oWH/b5K1CLlViFNtwJHQ/hMI7gaMJ7uPwdztxX2+yz/9c790Dl2yClTqnMu9dZFd0OxgTSTC/68AEf8Qmf8QVfE1yvskypqrJkz5LPWIldCuV3OJ2k79yukm1eX1CZd6/LFu2464JuZ1svdL7jB37iF37jD/7iX4K/s5p5WpNwruYzVuI2wb9tMIZgKIZhOEZgZInVzXl7Q2XevVot2nHXBd02+339fKTubz3qvHEYjwmYiEmYjCmYWmJ1c97eVpl3r7sW7bjrgm6b/b5+PlL3tx513kxUYBZmYw4qUYW5JVY3522+423bZr+vn4/U/a1HnbcIi7EES7EM1ajBcqlLXeoFUY86rx9OHmJd
+  </data>
+ </layer>
+ <objectgroup id="3" name="enemies">
+  <object id="1" x="3328" y="32" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="4" name="walls">
+  <object id="8" x="1712" y="96" width="32" height="48"/>
+  <object id="24" x="-16" y="0" width="16" height="144"/>
+ </objectgroup>
+ <objectgroup id="6" name="ground">
+  <object id="2" x="3248" y="48" width="192" height="48"/>
+  <object id="3" x="2720" y="80" width="128" height="16"/>
+  <object id="4" x="2528" y="32" width="128" height="32"/>
+  <object id="5" x="2272" y="32" width="128" height="32"/>
+  <object id="6" x="2064" y="32" width="128" height="32"/>
+  <object id="7" x="1664" y="80" width="128" height="16"/>
+  <object id="9" x="1856" y="32" width="128" height="32"/>
+  <object id="10" x="1616" y="144" width="1024" height="16"/>
+  <object id="11" x="2640" y="144" width="1360" height="16"/>
+  <object id="12" x="0" y="144" width="1072" height="16"/>
+  <object id="14" x="1072" y="128" width="64" height="16"/>
+  <object id="15" x="1136" y="112" width="192" height="16"/>
+  <object id="16" x="1328" y="128" width="288" height="16"/>
+  <object id="17" x="1184" y="80" width="128" height="16"/>
+  <object id="18" x="944" y="48" width="144" height="32"/>
+  <object id="19" x="752" y="64" width="64" height="32"/>
+  <object id="20" x="464" y="32" width="128" height="32"/>
+  <object id="21" x="320" y="16" width="64" height="16"/>
+  <object id="22" x="352" y="96" width="64" height="16"/>
+  <object id="23" x="144" y="80" width="128" height="16"/>
+  <object id="27" x="3552" y="64" width="32" height="32"/>
+  <object id="28" x="3648" y="16" width="32" height="32"/>
+  <object id="29" x="3648" y="96" width="32" height="32"/>
+  <object id="30" x="3744" y="96" width="32" height="32"/>
+  <object id="31" x="3744" y="16" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="7" name="treeend">
+  <object id="25" x="3952" y="96" width="32" height="48"/>
+  <object id="26" x="3936" y="48" width="64" height="48"/>
+ </objectgroup>
+ <objectgroup id="8" name="objects">
+  <object id="34" x="2224" y="112" width="32" height="32"/>
+  <object id="35" x="1984" y="112" width="32" height="32"/>
+  <object id="37" x="1120" y="112" width="16" height="16"/>
+  <object id="38" x="1056" y="128" width="16" height="16"/>
+  <object id="39" x="1328" y="112" width="16" height="16"/>
+  <object id="40" x="1344" y="112" width="16" height="16"/>
+  <object id="41" x="1616" y="128" width="16" height="16"/>
+ </objectgroup>
+ <objectgroup id="5" name="enemywalls">
+  <object id="32" x="3232" y="32" width="16" height="16"/>
+  <object id="33" x="3440" y="32" width="16" height="16"/>
+ </objectgroup>
+</map>

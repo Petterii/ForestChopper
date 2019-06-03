@@ -22,6 +22,7 @@ import com.mygdx.game.Items.Items;
 import com.mygdx.game.Screens.Hud;
 import com.mygdx.game.Screens.PlayScreen;
 
+import static com.mygdx.game.ForestChopper.ENDTREE_BIT;
 import static com.mygdx.game.ForestChopper.ENEMY_BIT;
 import static com.mygdx.game.ForestChopper.GROUND_BIT;
 import static com.mygdx.game.ForestChopper.ITEM_BIT;
@@ -40,6 +41,7 @@ import static com.mygdx.game.Screens.PlayScreen.TEXTURE_PLAYERHURT;
 public class Player extends Sprite {
 
 
+
     public void attack() {
 
         if (!swinging) {
@@ -55,7 +57,11 @@ public class Player extends Sprite {
         }
     }
 
-    public enum State {RUNNING, JUMPING , IDLE, FALLING, ATTACKING, DIEING, HURT}
+    public void chopThatTree() {
+        currentState = State.WINNING ;
+    }
+
+    public enum State {RUNNING, JUMPING , IDLE, FALLING, ATTACKING, DIEING, HURT, WINNING}
 
 
     public Body b2body;
@@ -180,7 +186,9 @@ public class Player extends Sprite {
     }
 
     public State getState() {
-        if (currentState == State.ATTACKING)
+        if (currentState == State.WINNING)
+            return State.WINNING;
+        else if (currentState == State.ATTACKING)
             return State.ATTACKING;
         else if (currentState == State.HURT && stateTimer <0.2f)
             return State.HURT;
@@ -256,7 +264,7 @@ public class Player extends Sprite {
         CircleShape shape = new CircleShape();
         shape.setRadius(5/PPM);
         fdef.filter.categoryBits = PLAYER_BIT;
-        fdef.filter.maskBits = GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT;
+        fdef.filter.maskBits = GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT | ENDTREE_BIT;
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
