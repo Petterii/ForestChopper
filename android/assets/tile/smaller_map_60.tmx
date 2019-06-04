@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="60" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="34">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="60" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="37">
  <tileset firstgid="1" source="tileset_darkforest.tsx"/>
  <tileset firstgid="129" source="tree_end128x128.tsx"/>
  <layer id="1" name="background" width="60" height="13">
@@ -17,6 +17,10 @@
    eJxjYBgFo4A2gIMInAbE6QPlQCoDMSJwGRCXM+AOj8EAiI0TNQKYmPAYCMAExGxQGoRhcYIuzkSiuYTCQ40KbicHEBMPAxkfxABSygkNIDYhAoPigw2KOYhgwzA+AMvHbAyo+ZoJhxxymsOVJtHlYGwQMCLRvxJk4CAsGAaEBgAT6196YpjbkMUYBoG76IlHmn9HIgYA7XdBfw==
   </data>
  </layer>
+ <objectgroup id="10" name="enemiesplants">
+  <object id="34" x="832" y="112" width="16" height="16"/>
+  <object id="36" x="352" y="48" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="7" name="enemywalls">
   <object id="26" x="480" y="32" width="16" height="16"/>
   <object id="27" x="768" y="48" width="16" height="16"/>

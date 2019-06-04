@@ -18,6 +18,9 @@ import static com.mygdx.game.Screens.PlayScreen.SOUND_SWORDSWING;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_WALK;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_COINSHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_DEADPLAYER;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTDIEINGSPRITESHEET;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTHURT;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_HIGHSCOREBACKGROUND;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVEL3;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_LEVELPICKERBACKGROUND;
@@ -50,8 +53,6 @@ public class ForestChopper extends Game {
 	public static final short PLAYERSWORD_BIT = 256;
     public static final short ENDTREE_BIT = 512;
 
-
-
 	// load all the sounds and pictures that are used alot to assets manager.
 
 	private AssetManager manager;
@@ -81,9 +82,10 @@ public class ForestChopper extends Game {
 		manager.load(TEXTURE_HIGHSCOREBACKGROUND, Texture.class);
 		manager.load(TEXTURE_LEVELPICKERBACKGROUND, Texture.class);
         manager.load(TEXTURE_MAINMENU, Texture.class);
-        manager.load(TEXTURE_LEVEL3, Texture.class);
-
-
+		manager.load(TEXTURE_LEVEL3, Texture.class);
+		manager.load(TEXTURE_ENEMYPLANTSPRITESHEET, Texture.class);
+		manager.load(TEXTURE_ENEMYPLANTDIEINGSPRITESHEET, Texture.class);
+		manager.load(TEXTURE_ENEMYPLANTHURT, Texture.class);
 
 		manager.load(UI_BUTTONS, Texture.class);
 		manager.load(UI_ATTACKICON, Texture.class);
@@ -95,8 +97,6 @@ public class ForestChopper extends Game {
 	@Override
 	public void render () {
 		super.render();
-
-
 	}
 
 	public AssetManager getManager(){

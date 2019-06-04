@@ -15,30 +15,28 @@ import com.mygdx.game.Screens.Hud;
 import com.mygdx.game.Screens.PlayScreen;
 import com.mygdx.game.Units.Enemy;
 
-
 import static com.mygdx.game.ForestChopper.ENEMYWALLS_BIT;
 import static com.mygdx.game.ForestChopper.ENEMY_BIT;
 import static com.mygdx.game.ForestChopper.GROUND_BIT;
-
 import static com.mygdx.game.ForestChopper.OBJECT_BIT;
 import static com.mygdx.game.ForestChopper.PLAYERSWORD_BIT;
 import static com.mygdx.game.ForestChopper.PLAYER_BIT;
 import static com.mygdx.game.ForestChopper.PPM;
 import static com.mygdx.game.ForestChopper.WALL_BIT;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_DAMAGE2;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTDIEINGSPRITESHEET;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTHURT;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKDIEINGSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKHURT;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKSPRITESHEET;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_PLAYERHURT;
 
-
-public class Screecher extends Enemy {
-
-
+public class Plant extends Enemy {
     private State currentState;
     private State previousState;
 
-    private final int DMG_AMOUNT = 30;
+    private final int DMG_AMOUNT = 50;
     private int hp;
 
     private boolean walkingRight;
@@ -49,19 +47,16 @@ public class Screecher extends Enemy {
 
 
     private Array<TextureRegion> frames;
-
-
-    private Animation<TextureRegion> bloodSplatterAnimation;
     private boolean animateBlood;
 
 
     // size of each of our ork's in our sprite sheet texture's
-    private final int oWsize = 64;
-    private final int oHsize = 56;
+    private final int oWsize = 96;
+    private final int oHsize = 128;
 
-    public Screecher(PlayScreen screen, float x, float y) {
+    public Plant(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        hp = 100;
+        hp = 10;
         setToDestroy = false;
         isDestroyed = false;
         currentState = State.WALKING;
@@ -71,30 +66,25 @@ public class Screecher extends Enemy {
         frames = new Array<TextureRegion>();
 
         // loop our frames and store in Animation with a frameduration.
-        for (int i = 0; i < 7; i++) {
-            frames.add(new TextureRegion((Texture) screen.getManager().get(TEXTURE_ORKSPRITESHEET),i*oWsize,0,oWsize,oHsize));
+        for (int i = 0; i < 2; i++) {
+            frames.add(new TextureRegion((Texture) screen.getManager().get(TEXTURE_ENEMYPLANTSPRITESHEET),i*oWsize,0,oWsize,oHsize));
         }
         walkAnimation = new Animation(0.2f,frames);
         frames.clear();
-        for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion((Texture) screen.getManager().get(TEXTURE_ORKSPRITESHEET),i*50,0,50,35));
-        }
-        bloodSplatterAnimation = new Animation(0.4f,frames);
-        frames.clear();
 
-        for (int i = 0; i < 7; i++) {
-            frames.add(new TextureRegion((Texture) screen.getManager().get(TEXTURE_ORKDIEINGSPRITESHEET),i*oWsize,0,oWsize,oHsize));
+        for (int i = 0; i < 3; i++) {
+            frames.add(new TextureRegion((Texture) screen.getManager().get(TEXTURE_ENEMYPLANTDIEINGSPRITESHEET),i*oWsize,0,oWsize,oHsize));
         }
         dieingAnimation = new Animation(0.2f,frames);
         frames.clear();
 
 
-        hurtAnimation = new Animation(0.2f,new TextureRegion((Texture) screen.getManager().get(TEXTURE_ORKHURT)));
+        hurtAnimation = new Animation(0.2f,new TextureRegion((Texture) screen.getManager().get(TEXTURE_ENEMYPLANTHURT)));
 
 
         stateTime = 0;
 
-        setBounds(getX(),getY(),oWsize/2/PPM,oHsize/2/PPM);
+        setBounds(getX(),getY(),oWsize/4/PPM,oHsize/4/PPM);
     }
 
     @Override
@@ -113,7 +103,7 @@ public class Screecher extends Enemy {
         CircleShape shape = new CircleShape();
         shape.setRadius(15/PPM);
         fdef.filter.categoryBits = ENEMY_BIT;
-        fdef.filter.maskBits = GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT;
+        fdef.filter.maskBits = GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT;
 
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
@@ -141,16 +131,6 @@ public class Screecher extends Enemy {
             return State.HURT;
         }
 
-        if (currentState == State.ATTACKING)
-            return State.ATTACKING;
-        else if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
-            return State.JUMPING;
-        else if (body.getLinearVelocity().y < 0)
-            return State.WALKING;
-        else if (body.getLinearVelocity().x != 0)
-            return State.WALKING;
-
-
         return State.WALKING;
     }
 
@@ -159,13 +139,7 @@ public class Screecher extends Enemy {
 
         TextureRegion region = new TextureRegion();
         switch (currentState){
-            case JUMPING:
-                region = walkAnimation.getKeyFrame(stateTime);
-                break;
             case WALKING:
-                region = walkAnimation.getKeyFrame(stateTime, true);
-                break;
-            case ATTACKING:
                 region = walkAnimation.getKeyFrame(stateTime, true);
                 break;
             case HURT:
@@ -177,16 +151,6 @@ public class Screecher extends Enemy {
             default:
                 region = walkAnimation.getKeyFrame(stateTime,true);
                 break;
-        }
-
-        if ((body.getLinearVelocity().x < 0 || !walkingRight) && !region.isFlipX())
-        {
-            region.flip(true,false);
-            walkingRight = false;
-        }
-        else if ((body.getLinearVelocity().x > 0 || walkingRight) && region.isFlipX()){
-            region.flip(true,false);
-            walkingRight = true;
         }
 
         stateTime = currentState == previousState ? stateTime + dt : 0;
@@ -213,13 +177,9 @@ public class Screecher extends Enemy {
                 toBedeleted = true;
 
         }else if(!isDestroyed){
-            body.setLinearVelocity(velocity);
             setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() /2);
             setRegion(getFrame(dt));
         }
-
-        if (velocity.x == 0 && stateTime >= 1)
-            velocity.x =1;
 
     }
 
@@ -235,7 +195,6 @@ public class Screecher extends Enemy {
         stateTime = 0;
         hp -= 30;
         float xForce = screen.getPlayer().b2body.getPosition().x < body.getPosition().x ? 2 : -2;
-        body.applyLinearImpulse(new Vector2(xForce,2f),body.getWorldCenter(),true);
         stateTime = 0;
         animateBlood = true;
 

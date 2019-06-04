@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="250" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="86">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="250" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="95">
  <tileset firstgid="1" source="tileset_darkforest.tsx"/>
  <tileset firstgid="129" source="tree_end128x128.tsx"/>
  <layer id="8" name="endtree" width="250" height="13">
@@ -17,6 +17,17 @@
    eJztmM9uwjAMxntkA7aJw8RlYyceYNozDcF5Am3qw88CLEUmzh8SmqR8n/RTqZM6oYnrJF0HQRAEQe1oQjwQj8Q0wB7iJ/ZZaHz6JjalOwEdtYgg1Rd0nUrGy5x4Ip6JF49d2vbEQSnT/ELQvYrjxYyN2UBtx+SBFO5ZvnUw21pcI+fKUW/EO7EiPjL4q0muuOi7U8zPu9vkRrMdKZstpcz1TC7J+VbTnqLUt3FL7DL4cclc00HxutX4y/guFee557ucb63Pv3UGH7/EXwY/LpX4fg2d+2vKGaY+LWjx3XI+5/cfem1BPF6pcc65fIicXrt4PRxzFmXKlzM0//Kef2t237mWLLPFN9frz/X6c12+mthstjIp3mvIPvZK/0P3I1o9fv+hV59P3zilnE9IX1obtjh37du1Ms7ltpyuzUvXf08dK1tZ6r3WnrQtC/IKRseigj6AS74AAKPnBwAAAADN8w8UgWjQ
   </data>
  </layer>
+ <objectgroup id="10" name="enemiesplants">
+  <object id="86" x="416" y="128" width="16" height="16"/>
+  <object id="87" x="992" y="80" width="16" height="16"/>
+  <object id="88" x="1664" y="80" width="16" height="16"/>
+  <object id="89" x="1920" y="64" width="16" height="16"/>
+  <object id="90" x="2608" y="128" width="16" height="16"/>
+  <object id="91" x="3200" y="16" width="16" height="16"/>
+  <object id="92" x="3840" y="80" width="16" height="16"/>
+  <object id="93" x="3664" y="48" width="16" height="16"/>
+  <object id="94" x="3312" y="128" width="16" height="16"/>
+ </objectgroup>
  <objectgroup id="9" name="treeend">
   <object id="78" x="3952" y="96" width="32" height="48"/>
   <object id="82" x="3936" y="48" width="80" height="48"/>

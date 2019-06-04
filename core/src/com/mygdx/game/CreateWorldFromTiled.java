@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.game.Items.Coin;
 import com.mygdx.game.Screens.PlayScreen;
+import com.mygdx.game.Units.Enemies.Plant;
 import com.mygdx.game.Units.Enemies.Screecher;
 
 import static com.mygdx.game.ForestChopper.ENDTREE_BIT;
@@ -74,6 +75,15 @@ public class CreateWorldFromTiled {
             screen.addEnemy(new Screecher(screen,rect.getX()/PPM,rect.getY()/PPM));
 
         }
+        for (MapObject object :
+                map.getLayers().get("enemiesplants").getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            screen.addEnemy(new Plant(screen,rect.getX()/PPM,rect.getY()/PPM));
+
+        }
+
+
         for (MapObject object :
                 map.getLayers().get("walls").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();

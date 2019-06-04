@@ -63,6 +63,9 @@ public class PlayScreen implements Screen{
     public static final String TEXTURE_LEVELPICKERBACKGROUND = "pictures/levelpicker_background400x200.jpg";
     public static final String TEXTURE_MAINMENU = "pictures/mainmenu_screen.png";
     public static final String TEXTURE_LEVEL3 = "tile/cleanforest_half.png";
+    public static final String TEXTURE_ENEMYPLANTSPRITESHEET = "chars/enemyplant_spritesheet.png";
+    public static final String TEXTURE_ENEMYPLANTHURT = "chars/plant_hurt_96x128.png";
+    public static final String TEXTURE_ENEMYPLANTDIEINGSPRITESHEET = "chars/plant_dieing_spritesheet.png";
 
 
 
@@ -214,7 +217,7 @@ public class PlayScreen implements Screen{
 
         update(delta);
         tileRenderer.render();
-        //b2dr.render(world,gamecam.combined);
+        b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
