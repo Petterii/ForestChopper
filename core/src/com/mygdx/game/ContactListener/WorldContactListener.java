@@ -70,11 +70,13 @@ public class WorldContactListener implements ContactListener {
             case PLAYER_BIT | ENEMY_BIT:
                 if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
                     ((Enemy) fixB.getUserData()).reverseVelocity(true,false);
-                    ((Player) fixA.getUserData()).gotHit(((Enemy) fixB.getUserData()).dmgAmount());
+                    if (((Enemy) fixB.getUserData()).getState() != Enemy.State.HURT)
+                        ((Player) fixA.getUserData()).gotHit(((Enemy) fixB.getUserData()).dmgAmount());
 
                 }else {
                     ((Enemy) fixA.getUserData()).reverseVelocity(true,false);
-                    ((Player) fixB.getUserData()).gotHit(((Enemy) fixA.getUserData()).dmgAmount());
+                    if (((Enemy) fixA.getUserData()).getState() != Enemy.State.HURT)
+                        ((Player) fixB.getUserData()).gotHit(((Enemy) fixA.getUserData()).dmgAmount());
                 }
                 break;
         }

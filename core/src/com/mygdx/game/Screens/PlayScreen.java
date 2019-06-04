@@ -214,7 +214,7 @@ public class PlayScreen implements Screen{
 
         update(delta);
         tileRenderer.render();
-        b2dr.render(world,gamecam.combined);
+        //b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -261,15 +261,24 @@ public class PlayScreen implements Screen{
             switch (leftDialog){
                 case 1: leftDialog =2;
                         leftChat.show("Chop That Big BOY Tree", 2f);
+                        noChat = false;
                         break;
                 case 2: leftDialog = 3;
                         rightChat.show("Puny Creature.",2f);
                         leftChatisActive = false;
+                        noChat = false;
                         break;
-                case 3: leftDialog = 4;
+                case 3: leftDialog = -1;
                         rightChat.show("ORKS KILLLLLL!!",2f);
                         leftChatisActive = false;
+                        noChat = false;
                         break;
+                case 4: leftDialog = -1;
+                        leftChat.show("Well Done",2f);
+                        leftChatisActive = true;
+                        noChat = false;
+                        break;
+
                 default: noChat = true;
 
             }
@@ -287,7 +296,7 @@ public class PlayScreen implements Screen{
     private boolean GameOver(){
         if (player.currentState == Player.State.WINNING && player.getStateTimer() > 2)
             return true;
-        if (player.currentState == Player.State.DIEING && player.getStateTimer() > 3)
+        if (Hud.getHealth() <= 0 && player.getStateTimer() > 3)
             return true;
         return false;
     }
@@ -296,7 +305,7 @@ public class PlayScreen implements Screen{
 
     private void update(float delta) {
         if (!paused)
-        world.step(1/60f,6,2);
+         world.step(1/60f,6,2);
         else
             world.step(0, 6,2);
         parallaxBackground.setSpeed(player.b2body.getLinearVelocity().x*-1);
@@ -322,8 +331,10 @@ public class PlayScreen implements Screen{
     }
 
     private void handleInputs() {
-        handleKeyboardInputs();
-        handleTouchInputs();
+        if (player.getState() != Player.State.DIEING) {
+            handleKeyboardInputs();
+            handleTouchInputs();
+        }
     }
 
     private void handleTouchInputs() {
@@ -345,11 +356,11 @@ public class PlayScreen implements Screen{
                 else if (rightButton.getBoundingRectangle().contains(xKord, yKord) && player.b2body.getLinearVelocity().x <= 2){
                     player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
 
-                }else if (attackIcon.getBoundingRectangle().contains(xKord,yKord)){
+                }else if (attackIcon.getBoundingRectangle().contains(xKord,yKord) && player.getState() != Player.State.ATTACKING){
                  //   paused = !paused;
                     player.attack();
                 }
-                else if (!leftButton.getBoundingRectangle().contains( xKord , yKord ) && !rightButton.getBoundingRectangle().contains(xKord, yKord)){
+                else if (!leftButton.getBoundingRectangle().contains( xKord , yKord ) && !rightButton.getBoundingRectangle().contains(xKord, yKord) && player.getState() != Player.State.ATTACKING ){
                     if (player.b2body.getLinearVelocity().y == 0){
                         Sound s = manager.get(SOUND_JUMP);
                         s.play();
@@ -371,7 +382,6 @@ public class PlayScreen implements Screen{
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
 
             player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
-            player.destroySword();
 
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
@@ -443,4 +453,7 @@ public class PlayScreen implements Screen{
         return items;
     }
 
+    public void setDialog(int i) {
+        leftDialog = i;
+    }
 }

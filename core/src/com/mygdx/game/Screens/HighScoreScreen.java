@@ -43,8 +43,10 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
     public HighScoreScreen(ForestChopper screen, int score,float time){
         this(screen);
+        score = (int)(score*time);
         Gdx.input.getTextInput(this,"Score "+score+". Enter Name:", "","name. ex Kalle");
         newHScore = new HighScore(score,(int)time);
+        hasTyped = false;
 
     }
     HighScore newHScore;
@@ -53,7 +55,7 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
     public HighScoreScreen(ForestChopper game) {
         background = game.getManager().get(TEXTURE_HIGHSCOREBACKGROUND);
-
+        hasTyped = true;
         highScores = getPreffsHighScore();
 
         this.game = game;
@@ -115,9 +117,12 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
     }
 
+    boolean hasTyped;
+
     @Override
     public void render(float delta) {
-        if (Gdx.input.justTouched()){
+
+        if (Gdx.input.justTouched() && hasTyped){
             game.setScreen(new NewGameScreen((ForestChopper) game));
             dispose();
         }
@@ -171,6 +176,7 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
         stage.clear();
         Table table = doTable();
         stage.addActor(table);
+        hasTyped = true;
     }
 
     @Override

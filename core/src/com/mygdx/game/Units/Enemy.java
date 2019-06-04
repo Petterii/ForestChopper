@@ -8,6 +8,7 @@ import com.mygdx.game.Screens.PlayScreen;
 
 public abstract class Enemy extends Sprite {
 
+    public enum State {WALKING, ATTACKING, JUMPING, HURT, DIEING}
     protected World world;
     protected PlayScreen screen;
     public Body body;
@@ -43,4 +44,6 @@ public abstract class Enemy extends Sprite {
     }
 
     public abstract void gotHit();
+
+    public abstract State getState();
 }

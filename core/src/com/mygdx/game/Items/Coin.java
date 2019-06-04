@@ -62,6 +62,9 @@ public class Coin extends Items {
         body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
+        //fdef.friction = 0f;
+        fdef.density = 0f;
+        fdef.restitution = 0f;
         CircleShape shape = new CircleShape();
         shape.setRadius(3/PPM);
         fdef.filter.categoryBits = ITEM_BIT;

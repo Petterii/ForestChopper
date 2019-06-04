@@ -44,8 +44,9 @@ public class Player extends Sprite {
 
     public void attack() {
 
-        if (!swinging) {
-            swinging= true;
+        if (getState() != State.ATTACKING) {
+            stateTimer = 0;
+            //swinging= true;
             attackStance();
             currentState = State.ATTACKING;
         }
@@ -58,6 +59,7 @@ public class Player extends Sprite {
     }
 
     public void chopThatTree() {
+        screen.setDialog(4);
         currentState = State.WINNING ;
     }
 
@@ -159,7 +161,11 @@ public class Player extends Sprite {
 
     private boolean playingWalk;
     public void update(float dt) {
-
+        if (getState() == State.ATTACKING && stateTimer > 0.5f){
+            destroySword();
+            //swinging = false;
+            currentState = State.IDLE;
+        }
 
         if (currentState != State.DIEING) {
             Sound s = screen.getManager().get(SOUND_WALK);
@@ -186,9 +192,11 @@ public class Player extends Sprite {
     }
 
     public State getState() {
-        if (currentState == State.WINNING)
+        if (Hud.getHealth() <= 0)
+            return State.DIEING;
+        else if (currentState == State.WINNING)
             return State.WINNING;
-        else if (currentState == State.ATTACKING)
+        else if (swordfixture != null)
             return State.ATTACKING;
         else if (currentState == State.HURT && stateTimer <0.2f)
             return State.HURT;
@@ -209,7 +217,7 @@ public class Player extends Sprite {
     }
 
     private TextureRegion getFrame(float dt) {
-        if (currentState != State.DIEING) {
+        if (currentState != State.DIEING && currentState != State.WINNING && (currentState != State.ATTACKING || stateTimer > 3)) {
             currentState = getState();
         }else{previousState = currentState;}
 
@@ -254,6 +262,7 @@ public class Player extends Sprite {
         return region;
     }
 
+    // create the body i box2d and insert into world
     private void definePlayer() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(32/PPM,132/PPM);
@@ -274,7 +283,7 @@ public class Player extends Sprite {
 
 
 
-
+    // create sword box2d sensor.
     private void createBodySwordSwingArea(){
         BodyDef bdef2word = new BodyDef();
         bdef2word.type = BodyDef.BodyType.StaticBody;
@@ -284,15 +293,11 @@ public class Player extends Sprite {
 
         fdef.filter.categoryBits = PLAYERSWORD_BIT;
         fdef.filter.maskBits = ENEMY_BIT;
-
         fdef.shape = shape;
         fdef.isSensor = true;
         swordfixture = b2body.createFixture(fdef);
 
         shape.dispose();
-
-
-
     }
 
     public void destroySword(){
@@ -303,27 +308,13 @@ public class Player extends Sprite {
         }
     }
 
-    private boolean swinging;
+    //private boolean swinging;
 
     private void attackStance(){
         Sound getHurt = screen.getManager().get(SOUND_SWORDSWING);
         getHurt.play(0.1f);
         createBodySwordSwingArea();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                long time = System.currentTimeMillis();
-                while (System.currentTimeMillis() < time + 200){}
-                Gdx.app.postRunnable(new Runnable() {
-                    @Override
-                    public void run() {
-                        destroySword();
-                        swinging = false;
-                        currentState = State.IDLE;
-                    }
-                });
-            }
-        }).start();
+        stateTimer = 0;
     }
 
     public void gotHit(int dmgAmount){

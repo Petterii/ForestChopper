@@ -33,7 +33,7 @@ import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKSPRITESHEET;
 
 public class Screecher extends Enemy {
 
-    public enum State {WALKING, ATTACKING, JUMPING, HURT, DIEING}
+
     private State currentState;
     private State previousState;
 
