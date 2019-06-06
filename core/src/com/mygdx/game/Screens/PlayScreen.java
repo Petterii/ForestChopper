@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.ContactListener.WorldContactListener;
-import com.mygdx.game.CreateWorldFromTiled;
+import com.mygdx.game.Helpers.CreateWorldFromTiled;
 import com.mygdx.game.ForestChopper;
 
 import com.mygdx.game.Items.Items;
@@ -300,6 +300,8 @@ public class PlayScreen implements Screen{
         if (player.currentState == Player.State.WINNING && player.getStateTimer() > 2)
             return true;
         if (Hud.getHealth() <= 0 && player.getStateTimer() > 3)
+            return true;
+        if (Hud.getTime() < 0)
             return true;
         return false;
     }

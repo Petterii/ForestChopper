@@ -15,7 +15,7 @@ import com.mygdx.game.ForestChopper;
 public class Hud implements Disposable {
     public Stage stage;
     private Viewport viewPort;
-    private Integer worldTimer;
+    private static Integer worldTimer;
     private static float timeCount;
     private static Integer score;
     private static Integer health;
@@ -28,7 +28,7 @@ public class Hud implements Disposable {
     Label playerLabel;
 
     public Hud(SpriteBatch sb){
-        worldTimer = 300;
+        worldTimer = 100;
         timeCount = 0;
         score = 0;
         health = 100;
@@ -77,8 +77,8 @@ public class Hud implements Disposable {
         return score;
     }
 
-    public static float getTime() {
-        return timeCount;
+    public static int getTime() {
+        return worldTimer;
     }
 
     public void update(float dt) {

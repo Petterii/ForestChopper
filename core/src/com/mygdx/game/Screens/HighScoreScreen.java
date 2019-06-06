@@ -36,14 +36,12 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
     Label firstScorepoints;
 
     private Texture background;
-
     private List<HighScore> highScores;
 
-    public static final String bg = "pictures/environment_forestbackground_scaled.png";
 
     public HighScoreScreen(ForestChopper screen, int score,float time){
         this(screen);
-        score = (int)(score*time);
+        //score = (int)(score*time);
         Gdx.input.getTextInput(this,"Score "+score+". Enter Name:", "","name. ex Kalle");
         newHScore = new HighScore(score,(int)time);
         hasTyped = false;
