@@ -34,8 +34,7 @@ public class ColorFilter
             generate(pixmap, Color.WHITE, (int) 255, 255, 255, (int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255), 127);
         }
 
-        /**
-         *
+        /**         *
          * @param pixmap
          * @param colorBase
          * @param colorPercentRed

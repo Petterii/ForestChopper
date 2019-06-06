@@ -217,7 +217,7 @@ public class PlayScreen implements Screen{
 
         update(delta);
         tileRenderer.render();
-        b2dr.render(world,gamecam.combined);
+        //b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
@@ -379,6 +379,8 @@ public class PlayScreen implements Screen{
 
     private void handleKeyboardInputs() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
+            Sound s = manager.get(SOUND_JUMP);
+            s.play();
             player.b2body.applyLinearImpulse(new Vector2(0,4f),player.b2body.getWorldCenter(),true);
         }
 

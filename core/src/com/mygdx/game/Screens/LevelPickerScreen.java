@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -49,10 +50,6 @@ public class LevelPickerScreen implements Screen {
     public void create () {
 
         background = game.getManager().get(TEXTURE_LEVELPICKERBACKGROUND);
-       // TextureRegion region = new TextureRegion(background, 0, 0, 2048, 1238);
-
-
-
 
         cam = new OrthographicCamera(ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
         viewport = new FitViewport(ForestChopper.V_WIDTH*2,ForestChopper.V_HEIGHT*2, cam);
@@ -73,8 +70,12 @@ public class LevelPickerScreen implements Screen {
         scroll.setFlingTime(0.1f);
         scroll.setPageSpacing(20);
         int c = 1;
-        for (int l = 0; l < 10; l++) {
+        for (int l = 0; l < 2; l++) {
             Table levels = new Table().pad(50);
+           // Label lvlPicklabel = new Label("Pick Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+           // lvlPicklabel.setFontScale(4f);
+           // levels.add(lvlPicklabel);
+            levels.row();
             levels.defaults().pad(20, 40, 20, 40);
             for (int y = 0; y < 3; y++) {
                 levels.row();
@@ -85,6 +86,7 @@ public class LevelPickerScreen implements Screen {
             scroll.addPage(levels);
         }
         container.add(scroll).expand().fill();
+
     }
 
     public void render () {
@@ -100,12 +102,15 @@ public class LevelPickerScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Gdx.graphics.getDeltaTime());
-        stage.getBatch().begin();
-        stage.getBatch().draw(background,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        stage.getBatch().end();
 
+
+        game.batch.begin();
+        game.batch.draw(background,0,0,ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
+        game.batch.end();
+
+        stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
@@ -193,7 +198,8 @@ public class LevelPickerScreen implements Screen {
                 game.setScreen(new PlayScreen((ForestChopper) game,"tile/level2.tmx"));
             else if(event.getListenerActor().getName().equals("Level3"))
                 game.setScreen(new PlayScreen((ForestChopper) game,"tile/lvl3.tmx"));
-
+            else
+                game.setScreen(new PlayScreen((ForestChopper) game,"tile/lvl3.tmx"));
             dispose();
             // TODO start picked level
         }

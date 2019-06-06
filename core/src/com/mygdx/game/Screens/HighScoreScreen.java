@@ -65,20 +65,9 @@ public class HighScoreScreen implements Screen,  Input.TextInputListener{
 
         Table table = doTable();
         Prefferences.savePreffs(highScores);
-        /*
-        table.add(firstScore).expandX();
-        table.add().expandX();
-        table.add(firstScorepoints).expandX();
-        table.row();
-        table.add(secondScore).expandX();
-        table.add().expandX();
-        table.add(secondScorepoints).expandX();
-*/
 
         stage.addActor(table);
 
-
-       // stage.addActor(tablescore);
     }
     Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.WHITE);
 

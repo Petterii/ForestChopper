@@ -43,13 +43,14 @@ public class ForestChopper extends Game {
 	// scaleing of Box2d Stuff. from 1 pixel = 1 meter. to 1 pixel = 1cm
 	public static final float PPM = 100;
 
-	public static final short ENEMYWALLS_BIT = 128;
+
 	public static final short PLAYER_BIT = 2;
 	public static final short GROUND_BIT = 4;
 	public static final short ITEM_BIT = 8;
 	public static final short ENEMY_BIT = 16;
 	public static final short WALL_BIT = 32;
 	public static final short OBJECT_BIT = 64;
+    public static final short ENEMYWALLS_BIT = 128;
 	public static final short PLAYERSWORD_BIT = 256;
     public static final short ENDTREE_BIT = 512;
 

@@ -35,36 +35,14 @@ import static com.mygdx.game.Screens.PlayScreen.SOUND_PLAYERDIEING;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_PLAYERHURT;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_SWORDSWING;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_WALK;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_DEADPLAYER;
+import static com.mygdx.game.Screens.PlayScreen.TEXTURE_MINITOUR4STANCES;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_PLAYERHURT;
 
 
 public class Player extends Sprite {
 
-
-
-    public void attack() {
-
-        if (getState() != State.ATTACKING) {
-            stateTimer = 0;
-            //swinging= true;
-            attackStance();
-            currentState = State.ATTACKING;
-        }
-    }
-
-    public void collectItem(Items itemCollected) {
-        if (itemCollected instanceof Coin){
-            Hud.addScore(1000);
-        }
-    }
-
-    public void chopThatTree() {
-        screen.setDialog(4);
-        currentState = State.WINNING ;
-    }
-
     public enum State {RUNNING, JUMPING , IDLE, FALLING, ATTACKING, DIEING, HURT, WINNING}
-
 
     public Body b2body;
     private World world;
@@ -84,9 +62,9 @@ public class Player extends Sprite {
     private final int pSize = 96;
 
     private PlayScreen screen;
-    private Texture texture;
-    private Texture dead;
-    private Texture hurtP;
+   // private Texture texture;
+   // private Texture dead;
+
 
     private Body sword;
     private Fixture swordfixture;
@@ -106,10 +84,8 @@ public class Player extends Sprite {
         setToDestroy = false;
         destroyed = false;
 
-        hurtP = new Texture(TEXTURE_PLAYERHURT);
-
-       this.texture = texture;
-       this.dead = dead;
+      // this.texture = texture;
+      // this.dead = dead;
        initialiseAnimations();
 
         setBounds(0,0,50/PPM,50/PPM);
@@ -119,59 +95,52 @@ public class Player extends Sprite {
     private void initialiseAnimations() {
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for (int i = 0; i < 4; i++) {
-            frames.add(new TextureRegion(getTexture(),i*pSize,0,pSize,pSize));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_MINITOUR4STANCES),i*pSize,0,pSize,pSize));
         }
         playerIdle = new Animation(0.1f,frames);
         frames.clear();
 
         for (int i = 0; i < 8; i++) {
-            frames.add(new TextureRegion(getTexture(),i*pSize,pSize*1,pSize,pSize));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_MINITOUR4STANCES),i*pSize,pSize*1,pSize,pSize));
         }
         playerRun = new Animation(0.1f,frames);
         frames.clear();
         for (int i = 0; i < 7; i++) {
-            frames.add(new TextureRegion(getTexture(),i*pSize,pSize*2,pSize,pSize));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_MINITOUR4STANCES),i*pSize,pSize*2,pSize,pSize));
         }
         playerAttack = new Animation(0.1f,frames);
         frames.clear();
 
         for (int i = 0; i < 6; i++) {
-            frames.add(new TextureRegion(getTexture(),i*pSize,pSize*3,pSize,pSize));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_MINITOUR4STANCES),i*pSize,pSize*3,pSize,pSize));
         }
         playerJump = new Animation(0.1f,frames);
         frames.clear();
 
         for (int i = 0; i < 1; i++) {
-            frames.add(new TextureRegion(hurtP,i*96,0,96,96));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_PLAYERHURT),i*96,0,96,96));
         }
         playerHurt = new Animation(1f,frames);
         frames.clear();
 
         for (int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(dead,i*96,0,96,96));
+            frames.add(new TextureRegion((Texture)screen.getManager().get(TEXTURE_DEADPLAYER),i*96,0,96,96));
         }
         playerDieing = new Animation(0.2f,frames);
         frames.clear();
-    }
-
-    @Override
-    public Texture getTexture() {
-        return texture;
     }
 
     private boolean playingWalk;
     public void update(float dt) {
         if (getState() == State.ATTACKING && stateTimer > 0.5f){
             destroySword();
-            //swinging = false;
             currentState = State.IDLE;
         }
-
+        Sound s = screen.getManager().get(SOUND_WALK);
         if (currentState != State.DIEING) {
-            Sound s = screen.getManager().get(SOUND_WALK);
             if (currentState == State.RUNNING && !playingWalk) {
                 playingWalk = true;
-                long id = s.play(0.3f);
+                long id = s.play(0.8f);
                 s.setLooping(id,true);
             } else if (currentState != State.RUNNING) {
                 s.stop();
@@ -181,8 +150,10 @@ public class Player extends Sprite {
             setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
             setRegion(getFrame(dt));
         } else{
-            if (!destroyed)
+            if (!destroyed){
                 world.destroyBody(b2body);
+                s.stop();
+            }
             destroyed = true;
             setRegion(getFrame(dt));
 
@@ -281,8 +252,6 @@ public class Player extends Sprite {
         shape.dispose();
     }
 
-
-
     // create sword box2d sensor.
     private void createBodySwordSwingArea(){
         BodyDef bdef2word = new BodyDef();
@@ -308,11 +277,9 @@ public class Player extends Sprite {
         }
     }
 
-    //private boolean swinging;
-
     private void attackStance(){
         Sound getHurt = screen.getManager().get(SOUND_SWORDSWING);
-        getHurt.play(0.1f);
+        getHurt.play(0.3f);
         createBodySwordSwingArea();
         stateTimer = 0;
     }
@@ -339,5 +306,25 @@ public class Player extends Sprite {
         }
     }
 
+    public void attack() {
+
+        if (getState() != State.ATTACKING) {
+            stateTimer = 0;
+            //swinging= true;
+            attackStance();
+            currentState = State.ATTACKING;
+        }
+    }
+
+    public void collectItem(Items itemCollected) {
+        if (itemCollected instanceof Coin){
+            Hud.addScore(1000);
+        }
+    }
+
+    public void chopThatTree() {
+        screen.setDialog(4);
+        currentState = State.WINNING ;
+    }
 
 }
