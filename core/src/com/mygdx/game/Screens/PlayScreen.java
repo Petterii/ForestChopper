@@ -136,11 +136,11 @@ public class PlayScreen implements Screen{
         enemies = new Array<Enemy>();
         items = new Array<Items>();
         initParallax();
-        manager = game.getManager();
+        manager = game.getManager(); // where textures and sounds are
         leftDialog = 0;
         leftChatisActive = true;
 
-        topHud = new Hud(game.batch);
+        topHud = new Hud(game.batch); // creates table in a stage that shows ... Score/health/time top of the screen.
         hudBatch = new SpriteBatch();
 
         this.game = game;
@@ -150,25 +150,30 @@ public class PlayScreen implements Screen{
         gamePort = new FitViewport(V_WIDTH/ PPM,V_HEIGHT/ PPM,gamecam);
         gamePort.apply();
 
+        // Tiled init. where level file is loaded.
         mapLoad = new TmxMapLoader();
         map = mapLoad.load(level);
         tileRenderer = new OrthogonalTiledMapRenderer(map,1/PPM);
 
         gamecam.position.set(gamePort.getWorldWidth()/2, gamePort.getWorldHeight()/2,0);
-        world = new World(new Vector2(0,-10), true);
+        world = new World(new Vector2(0,-10), true); // -10 is gravity
         b2dr = new Box2DDebugRenderer();
 
 
+        // create the world that is in "level.tmx" file.
         new CreateWorldFromTiled(this);
+
         player = new Player(this, new Texture(TEXTURE_MINITOUR4STANCES), new Texture(TEXTURE_DEADPLAYER));
 
+        // creates the left,right and attack button on the screen.
         initButtons();
 
         world.setContactListener(new WorldContactListener());
 
+        // chatbubble stuff
         rightChat = new ChatBubble();
         leftChat = new ChatBubble();
-        //rightChat.show("Puny Creature",4f);
+
         leftChat.show("Hello Sir", 2f);
         NextDialog();
     }
@@ -199,10 +204,35 @@ public class PlayScreen implements Screen{
         rightButton.setPosition(rightButton.getWidth()*2,0);
     }
 
+    private void update(float delta) {
+        world.step(1/60f,6,2);
+
+        parallaxBackground.setSpeed(player.b2body.getLinearVelocity().x*-1);
+        for (Enemy enemy : enemies) {
+            if (!enemy.isToBedeleted())
+                enemy.update(delta);
+        }
+        for (Items item: items) {
+            if (!item.destroyed)
+                item.update(delta);
+        }
+
+        topHud.update(delta);
+        player.update(delta);
+
+
+        // camera follows player until player dies
+        if (player.getState() != Player.State.DIEING) {
+            gamecam.position.x = player.b2body.getPosition().x;
+        }
+        gamecam.update();
+        tileRenderer.setView(gamecam);
+    }
+
     @Override
     public void render(float delta) {
 
-
+        // if player is dieing then you cant move.
         if (player.getState() != Player.State.DIEING)
             if (!player.destroyed)
                 handleInputs();
@@ -216,7 +246,11 @@ public class PlayScreen implements Screen{
         stage.draw();
 
         update(delta);
+
+        //graphics frome "level.tmx"
         tileRenderer.render();
+
+        // box2d debug lines.
         //b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
@@ -245,7 +279,7 @@ public class PlayScreen implements Screen{
         drawChat();
         handleDialogs(); // new potential dialog
 
-        // if player failed and goes to a gameover/newgame screen
+        // if player failed and goes to a highscore screen
         if (GameOver()){
             game.setScreen(new HighScoreScreen(game, Hud.getScore(),Hud.getTime()));
             dispose();
@@ -306,34 +340,6 @@ public class PlayScreen implements Screen{
         return false;
     }
 
-    private boolean paused;
-
-    private void update(float delta) {
-        if (!paused)
-         world.step(1/60f,6,2);
-        else
-            world.step(0, 6,2);
-        parallaxBackground.setSpeed(player.b2body.getLinearVelocity().x*-1);
-        for (Enemy enemy : enemies) {
-            if (!enemy.isToBedeleted())
-                enemy.update(delta);
-        }
-        for (Items item: items) {
-            if (!item.destroyed)
-                item.update(delta);
-        }
-
-        topHud.update(delta);
-        player.update(delta);
-
-
-        // camera follows player until player dies
-        if (player.getState() != Player.State.DIEING) {
-            gamecam.position.x = player.b2body.getPosition().x;
-        }
-        gamecam.update();
-        tileRenderer.setView(gamecam);
-    }
 
     private void handleInputs() {
         if (player.getState() != Player.State.DIEING) {
@@ -397,6 +403,7 @@ public class PlayScreen implements Screen{
         }
     }
 
+    // needed when useing Tiled. else Blackscreen on android.
     @Override
     public void resize(int width, int height) {
         gamePort.update(width,height,false);

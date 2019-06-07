@@ -53,6 +53,7 @@ public class CreateWorldFromTiled {
             body.createFixture(fdef);
 
         }
+        // objects in world
         for (MapObject object :
                 map.getLayers().get("objects").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -68,6 +69,8 @@ public class CreateWorldFromTiled {
             body.createFixture(fdef);
 
         }
+
+        // enemies created
         for (MapObject object :
                 map.getLayers().get("enemies").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -75,6 +78,8 @@ public class CreateWorldFromTiled {
             screen.addEnemy(new Screecher(screen,rect.getX()/PPM,rect.getY()/PPM));
 
         }
+
+        // enemyplants created.
         for (MapObject object :
                 map.getLayers().get("enemiesplants").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -100,6 +105,7 @@ public class CreateWorldFromTiled {
 
         }
 
+        // enemy walls created where only enemies react. So they dont fall down from platforms.
         for (MapObject object :
                 map.getLayers().get("enemywalls").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -116,6 +122,7 @@ public class CreateWorldFromTiled {
 
         }
 
+        // The tree at the end. AKA finish line.
         for (MapObject object :
                 map.getLayers().get("treeend").getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -131,8 +138,6 @@ public class CreateWorldFromTiled {
             body.createFixture(fdef);
 
         }
-
-        //screen.getItems().add(new Coin(screen,2,0.9f));
 
         shape.dispose();
     }

@@ -64,6 +64,19 @@ public class NewGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+       handleInput();
+
+        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.getBatch().begin();
+        stage.getBatch().draw(bground,0,0,ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
+        stage.getBatch().end();
+
+        stage.draw();
+    }
+
+    private void handleInput() {
         if (Gdx.input.justTouched()) {
 
             float dingosX = Gdx.input.getX();
@@ -83,15 +96,6 @@ public class NewGameScreen implements Screen {
                 dispose();
             }
         }
-
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.getBatch().begin();
-        stage.getBatch().draw(bground,0,0,ForestChopper.V_WIDTH,ForestChopper.V_HEIGHT);
-        stage.getBatch().end();
-
-        stage.draw();
     }
 
     @Override

@@ -59,12 +59,9 @@ public class Player extends Sprite {
     private float stateTimer;
     private boolean runningRight;
 
-    private final int pSize = 96;
+    private final int pSize = 96; // size of the frames of the player in spritesheet
 
     private PlayScreen screen;
-   // private Texture texture;
-   // private Texture dead;
-
 
     private Body sword;
     private Fixture swordfixture;
@@ -84,8 +81,6 @@ public class Player extends Sprite {
         setToDestroy = false;
         destroyed = false;
 
-      // this.texture = texture;
-      // this.dead = dead;
        initialiseAnimations();
 
         setBounds(0,0,50/PPM,50/PPM);
@@ -162,6 +157,7 @@ public class Player extends Sprite {
 
     }
 
+    // returns what is player doing right now.
     public State getState() {
         if (Hud.getHealth() <= 0)
             return State.DIEING;
@@ -187,11 +183,13 @@ public class Player extends Sprite {
         return stateTimer;
     }
 
+    //
     private TextureRegion getFrame(float dt) {
         if (currentState != State.DIEING && currentState != State.WINNING && (currentState != State.ATTACKING || stateTimer > 3)) {
             currentState = getState();
         }else{previousState = currentState;}
 
+        // got state now gets the animation frame.
         TextureRegion region = new TextureRegion();
         switch (currentState){
             case JUMPING:
@@ -216,6 +214,7 @@ public class Player extends Sprite {
                 break;
         }
 
+        // which way is player walking/facing.
         if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX())
         {
             region.flip(true,false);
@@ -243,8 +242,9 @@ public class Player extends Sprite {
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(5/PPM);
-        fdef.filter.categoryBits = PLAYER_BIT;
-        fdef.filter.maskBits = GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT | ENDTREE_BIT;
+
+        fdef.filter.categoryBits = PLAYER_BIT; // defines this.
+        fdef.filter.maskBits = GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT | ENDTREE_BIT; // defines who it collides with.
 
         fdef.shape = shape;
         b2body.createFixture(fdef).setUserData(this);
@@ -260,8 +260,8 @@ public class Player extends Sprite {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox((200/9)/PPM, (100/9)/PPM);
 
-        fdef.filter.categoryBits = PLAYERSWORD_BIT;
-        fdef.filter.maskBits = ENEMY_BIT;
+        fdef.filter.categoryBits = PLAYERSWORD_BIT; // this is Player sword
+        fdef.filter.maskBits = ENEMY_BIT; // can collide with Enemy
         fdef.shape = shape;
         fdef.isSensor = true;
         swordfixture = b2body.createFixture(fdef);
@@ -307,16 +307,15 @@ public class Player extends Sprite {
     }
 
     public void attack() {
-
         if (getState() != State.ATTACKING) {
             stateTimer = 0;
-            //swinging= true;
             attackStance();
             currentState = State.ATTACKING;
         }
     }
 
     public void collectItem(Items itemCollected) {
+        // To check what kind of item it is.
         if (itemCollected instanceof Coin){
             Hud.addScore(1000);
         }
