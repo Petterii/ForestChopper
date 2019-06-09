@@ -47,6 +47,7 @@ project(":desktop") {
 
     dependencies {
         compile project(":core")
+        compile 'com.google.code.gson:gson:2.8.5'
         compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -62,6 +63,7 @@ project(":android") {
 
     dependencies {
         compile project(":core")
+        compile 'com.google.code.gson:gson:2.8.5'
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

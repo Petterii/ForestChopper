@@ -1,7 +1,7 @@
 package com.mygdx.game.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 
@@ -14,11 +14,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import com.mygdx.game.ForestChopper;
-
 
 
 import static com.mygdx.game.ForestChopper.V_HEIGHT;
@@ -30,10 +31,9 @@ public class NewGameScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
     private ForestChopper game;
+    private Label playButton;
+    private Label weatherLabel;
 
-
-    private AssetManager manager;
-    public static final String bg = "pictures/environment_forestbackground_scaled.png";
     Texture bground;
     public NewGameScreen(ForestChopper game) {
         bground = game.getManager().get(TEXTURE_MAINMENU);
@@ -47,15 +47,20 @@ public class NewGameScreen implements Screen {
         table.setFillParent(true);
 
         Label gameOverLabel = new Label("FOREST CHOPPER", font);
-        Label playButton = new Label("Click to Play", font);
+        playButton = new Label("Click to Play", font);
+        weatherLabel = new Label("Getting Weather Today ", font);
 
-        table.add(gameOverLabel).expandX();
+        table.add(gameOverLabel).expandX().padTop(40f);
         table.row();
         table.add(playButton).expandX().padTop(10f);
+        table.row();
+        table.add(weatherLabel).expandX().padTop(30f);
 
         stage.addActor(table);
-    }
 
+        httpRequestTest();
+
+    }
 
     @Override
     public void show() {
@@ -123,6 +128,49 @@ public class NewGameScreen implements Screen {
         stage.dispose();
     }
 
+    // get json data
+    private void rjsonread(String jsondata){
+        JsonReader json = new JsonReader();
+        JsonValue base = json.parse(jsondata);
 
+        //array objects in json if you would have more components
+        for (JsonValue component1 : base.get("weather"))
+        {
+            changeWeatherText(component1.getString("description"));
+        }
+    }
+
+    private void changeWeatherText(String text){
+        weatherLabel.setText("Today's weather: "+text);
+    }
+
+    // GET weather data from URL
+    private void httpRequestTest(){
+        Gdx.app.log("startShit:","god dammit");
+        Net.HttpRequest request = new Net.HttpRequest(Net.HttpMethods.GET);
+        request.setUrl("http://api.openweathermap.org/data/2.5/weather?q=London&APPID=0b097aa7c90c1fe75898c100483bfa96");
+        request.setHeader("Content-Type", "application/json");
+        request.setHeader("Accept", "application/json");
+
+        Gdx.net.sendHttpRequest(request, new Net.HttpResponseListener() {
+            @Override
+            public void handleHttpResponse (Net.HttpResponse httpResponse) {
+                String testFetch = httpResponse.getResultAsString();
+                rjsonread(testFetch);
+            }
+
+            @Override
+            public void failed (Throwable t) {
+                Gdx.app.error("HttpRequestExample", "something went wrong", t);
+                changeWeatherText("WEATHER FETCH FAILED :(");
+            }
+
+            @Override
+            public void cancelled () {
+                Gdx.app.log("HttpRequestExample", "cancelled");
+            }
+        });
+
+    }
 
 }

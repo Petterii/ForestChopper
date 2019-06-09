@@ -40,7 +40,7 @@ import com.badlogic.gdx.utils.Array;
         private void setup() {
             content = new Table();
             content.defaults().space(50);
-            super.setWidget(content);
+
         }
 
         public void addPages (Actor... pages) {
@@ -66,10 +66,6 @@ import com.badlogic.gdx.utils.Array;
             }
         }
 
-        @Override
-        public void setWidget (Actor widget) {
-            throw new UnsupportedOperationException("Use PagedScrollPane#addPage.");
-        }
 
         @Override
         public void setWidth (float width) {
