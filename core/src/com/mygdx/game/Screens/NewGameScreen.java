@@ -141,7 +141,7 @@ public class NewGameScreen implements Screen {
     }
 
     private void changeWeatherText(String text){
-        weatherLabel.setText("Today's weather: "+text);
+        weatherLabel.setText("Weather in London : "+text);
     }
 
     // GET weather data from URL
