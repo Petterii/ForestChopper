@@ -69,7 +69,7 @@ public class NewGameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-       handleInput();
+
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -79,6 +79,8 @@ public class NewGameScreen implements Screen {
         stage.getBatch().end();
 
         stage.draw();
+
+        handleInput();
     }
 
     private void handleInput() {
@@ -97,7 +99,8 @@ public class NewGameScreen implements Screen {
                 dispose();
             }
             else {
-                game.setScreen(new LevelPickerScreen((ForestChopper) game));
+                game.setScreen(new PlayScreen((ForestChopper) game,"tile/smaller_map_60.tmx"));
+                //game.setScreen(new LevelPickerScreen((ForestChopper) game));
                 dispose();
             }
         }

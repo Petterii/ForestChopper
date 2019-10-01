@@ -44,6 +44,7 @@ public class LevelPickerScreen implements Screen {
 
     public LevelPickerScreen(ForestChopper game){
         this.game = game;
+
         create();
     }
 
@@ -72,15 +73,17 @@ public class LevelPickerScreen implements Screen {
         int c = 1;
         for (int l = 0; l < 2; l++) {
             Table levels = new Table().pad(50);
-           // Label lvlPicklabel = new Label("Pick Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-           // lvlPicklabel.setFontScale(4f);
-           // levels.add(lvlPicklabel);
+            // Label lvlPicklabel = new Label("Pick Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+            // lvlPicklabel.setFontScale(4f);
+            // levels.add(lvlPicklabel);
             levels.row();
             levels.defaults().pad(20, 40, 20, 40);
             for (int y = 0; y < 3; y++) {
                 levels.row();
                 for (int x = 0; x < 4; x++) {
-                    levels.add(getLevelButton(c++)).expand().fill();
+                    c++;
+                    levels.add(getLevelButton(c)).expand().fill();
+
                 }
             }
             scroll.addPage(levels);
@@ -91,7 +94,7 @@ public class LevelPickerScreen implements Screen {
 
     public void render () {
 
-        //Table.drawDebug(stage);
+      //Table.drawDebug(stage);
     }
 
 
@@ -159,8 +162,8 @@ public class LevelPickerScreen implements Screen {
         button.stack(new Image(skin.getDrawable("top")), label).expand().fill();
 
         // Randomize the number of stars earned for demonstration purposes
-      //  int stars = MathUtils.random(-1, +3);
-       int stars = 0;
+        //  int stars = MathUtils.random(-1, +3);
+        int stars = 0;
         Table starTable = new Table();
         starTable.defaults().pad(5);
         if (stars >= 0) {
