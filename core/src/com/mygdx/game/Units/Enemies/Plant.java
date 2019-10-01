@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Items.Coin;
 import com.mygdx.game.Screens.Hud;
 import com.mygdx.game.Screens.PlayScreen;
@@ -94,6 +95,12 @@ public class Plant extends Enemy {
 
     @Override
     protected void create2dBoxEnemy() {
+        int x,y,radius;
+        radius = 15;
+        mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
+        mainBody.finilizeCollision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
+        mainBody.finalize(this);
+        /*
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(),getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -109,6 +116,7 @@ public class Plant extends Enemy {
         body.createFixture(fdef).setUserData(this);
 
         shape.dispose();
+    */
     }
 
     @Override
@@ -166,7 +174,7 @@ public class Plant extends Enemy {
             // need to have it like this so death animation is shown.
             if (!isDestroyed){
                 Hud.addScore(20);
-                world.destroyBody(body);
+                world.destroyBody(mainBody.getBody());
                 isDestroyed = true;
             }
 
@@ -177,7 +185,7 @@ public class Plant extends Enemy {
                 toBedeleted = true;
 
         }else if(!isDestroyed){
-            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() /2);
+            setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() /2);
             setRegion(getFrame(dt));
         }
 
@@ -194,7 +202,7 @@ public class Plant extends Enemy {
         velocity.x = 0;
         stateTime = 0;
         hp -= 30;
-        float xForce = screen.getPlayer().b2body.getPosition().x < body.getPosition().x ? 2 : -2;
+        float xForce = screen.getPlayer().getMainBody().getPosition().x < mainBody.getBody().getPosition().x ? 2 : -2;
         stateTime = 0;
         animateBlood = true;
 

@@ -3,6 +3,7 @@ package com.mygdx.game.Items;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Screens.PlayScreen;
 
 public abstract class Items extends Sprite {
@@ -12,7 +13,7 @@ public abstract class Items extends Sprite {
 
     protected PlayScreen screen;
     protected World world;
-    public Body body;
+    public CustomBody mainBody;
 
     public Items(PlayScreen screen,float x,float y) {
         this.screen = screen;

@@ -207,7 +207,7 @@ public class PlayScreen implements Screen{
     private void update(float delta) {
         world.step(1/60f,6,2);
 
-        parallaxBackground.setSpeed(player.b2body.getLinearVelocity().x*-1);
+        parallaxBackground.setSpeed(player.getMainBody().getLinearVelocity().x*-1);
         for (Enemy enemy : enemies) {
             if (!enemy.isToBedeleted())
                 enemy.update(delta);
@@ -223,7 +223,7 @@ public class PlayScreen implements Screen{
 
         // camera follows player until player dies
         if (player.getState() != Player.State.DIEING) {
-            gamecam.position.x = player.b2body.getPosition().x;
+            gamecam.position.x = player.getMainBody().getPosition().x;
         }
         gamecam.update();
         tileRenderer.setView(gamecam);
@@ -361,21 +361,21 @@ public class PlayScreen implements Screen{
                 float xKord = ((float)V_WIDTH/Gdx.graphics.getWidth()) * dingosX;
                 float yKord = ((float)V_HEIGHT/Gdx.graphics.getHeight()) * (Gdx.graphics.getHeight()-dingosY);
 
-                if (leftButton.getBoundingRectangle().contains( xKord , yKord ) && player.b2body.getLinearVelocity().x >= -2){
-                    player.b2body.applyLinearImpulse(new Vector2(-0.1f,0f),player.b2body.getWorldCenter(),true);
+                if (leftButton.getBoundingRectangle().contains( xKord , yKord ) && player.getMainBody().getLinearVelocity().x >= -2){
+                    player.getMainBody().applyLinearImpulse(new Vector2(-0.1f,0f),player.getMainBody().getWorldCenter(),true);
                 }
-                else if (rightButton.getBoundingRectangle().contains(xKord, yKord) && player.b2body.getLinearVelocity().x <= 2){
-                    player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
+                else if (rightButton.getBoundingRectangle().contains(xKord, yKord) && player.getMainBody().getLinearVelocity().x <= 2){
+                    player.getMainBody().applyLinearImpulse(new Vector2(0.1f,0f),player.getMainBody().getWorldCenter(),true);
 
                 }else if (attackIcon.getBoundingRectangle().contains(xKord,yKord) && player.getState() != Player.State.ATTACKING){
                  //   paused = !paused;
                     player.attack();
                 }
                 else if (!leftButton.getBoundingRectangle().contains( xKord , yKord ) && !rightButton.getBoundingRectangle().contains(xKord, yKord) && player.getState() != Player.State.ATTACKING ){
-                    if (player.b2body.getLinearVelocity().y == 0){
+                    if (player.getMainBody().getLinearVelocity().y == 0){
                         Sound s = manager.get(SOUND_JUMP);
                         s.play();
-                        player.b2body.applyLinearImpulse(new Vector2(0,4f),player.b2body.getWorldCenter(),true);
+                        player.getMainBody().applyLinearImpulse(new Vector2(0,4f),player.getMainBody().getWorldCenter(),true);
                     }
                 }
 
@@ -389,16 +389,16 @@ public class PlayScreen implements Screen{
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
             Sound s = manager.get(SOUND_JUMP);
             s.play();
-            player.b2body.applyLinearImpulse(new Vector2(0,4f),player.b2body.getWorldCenter(),true);
+            player.getMainBody().applyLinearImpulse(new Vector2(0,4f),player.getMainBody().getWorldCenter(),true);
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2){
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.getMainBody().getLinearVelocity().x <= 2){
 
-            player.b2body.applyLinearImpulse(new Vector2(0.1f,0f),player.b2body.getWorldCenter(),true);
+            player.getMainBody().applyLinearImpulse(new Vector2(0.1f,0f),player.getMainBody().getWorldCenter(),true);
 
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2){
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f,0f),player.b2body.getWorldCenter(),true);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.getMainBody().getLinearVelocity().x >= -2){
+            player.getMainBody().applyLinearImpulse(new Vector2(-0.1f,0f),player.getMainBody().getWorldCenter(),true);
 
         }
     }

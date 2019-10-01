@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Items.Coin;
 import com.mygdx.game.Items.Items;
 import com.mygdx.game.Screens.Hud;
@@ -44,7 +45,7 @@ public class Player extends Sprite {
 
     public enum State {RUNNING, JUMPING , IDLE, FALLING, ATTACKING, DIEING, HURT, WINNING}
 
-    public Body b2body;
+   // public Body b2body;
     private World world;
 
     public State currentState;
@@ -142,11 +143,11 @@ public class Player extends Sprite {
                 playingWalk = false;
             }
 
-            setPosition(b2body.getPosition().x - getWidth() / 2, b2body.getPosition().y - getHeight() / 2);
+            setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() / 2);
             setRegion(getFrame(dt));
         } else{
             if (!destroyed){
-                world.destroyBody(b2body);
+                world.destroyBody(mainBody.getBody());
                 s.stop();
             }
             destroyed = true;
@@ -167,11 +168,11 @@ public class Player extends Sprite {
             return State.ATTACKING;
         else if (currentState == State.HURT && stateTimer <0.2f)
             return State.HURT;
-        else if (b2body.getLinearVelocity().y > 0 || (b2body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
+        else if (mainBody.getBody().getLinearVelocity().y > 0 || (mainBody.getBody().getLinearVelocity().y < 0 && previousState == State.JUMPING))
             return State.JUMPING;
-        else if (b2body.getLinearVelocity().y < 0)
+        else if (mainBody.getBody().getLinearVelocity().y < 0)
             return State.IDLE;
-        else if (b2body.getLinearVelocity().x != 0)
+        else if (mainBody.getBody().getLinearVelocity().x != 0)
             return State.RUNNING;
         else
             return State.IDLE;
@@ -215,12 +216,12 @@ public class Player extends Sprite {
         }
 
         // which way is player walking/facing.
-        if ((b2body.getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX())
+        if ((mainBody.getBody().getLinearVelocity().x < 0 || !runningRight) && !region.isFlipX())
         {
             region.flip(true,false);
             runningRight = false;
         }
-        else if ((b2body.getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
+        else if ((mainBody.getBody().getLinearVelocity().x > 0 || runningRight) && region.isFlipX()){
             region.flip(true,false);
             runningRight = true;
         }
@@ -232,28 +233,26 @@ public class Player extends Sprite {
         return region;
     }
 
+    private CustomBody mainBody;
+    private int positionX,positionY,radius;
+
     // create the body i box2d and insert into world
     private void definePlayer() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(32/PPM,132/PPM);
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bdef);
+        positionX = 132;
+        positionY = 132;
+        radius = 5;
 
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(5/PPM);
+        mainBody = new CustomBody(world,positionX/PPM,positionY/PPM, CustomBody.BodyType.DYNAMICBODY,radius);
+        mainBody.finilizeCollision((short)(GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT | ENDTREE_BIT),(short)PLAYER_BIT);
+        mainBody.finalize(this);
 
-        fdef.filter.categoryBits = PLAYER_BIT; // defines this.
-        fdef.filter.maskBits = GROUND_BIT | OBJECT_BIT | ENEMY_BIT | WALL_BIT | ITEM_BIT | ENDTREE_BIT; // defines who it collides with.
-
-        fdef.shape = shape;
-        b2body.createFixture(fdef).setUserData(this);
-
-        shape.dispose();
     }
+
+
 
     // create sword box2d sensor.
     private void createBodySwordSwingArea(){
+
         BodyDef bdef2word = new BodyDef();
         bdef2word.type = BodyDef.BodyType.StaticBody;
         FixtureDef fdef = new FixtureDef();
@@ -264,14 +263,14 @@ public class Player extends Sprite {
         fdef.filter.maskBits = ENEMY_BIT; // can collide with Enemy
         fdef.shape = shape;
         fdef.isSensor = true;
-        swordfixture = b2body.createFixture(fdef);
+        swordfixture = mainBody.getBody().createFixture(fdef);
 
         shape.dispose();
     }
 
     public void destroySword(){
         if(swordfixture != null){
-            b2body.destroyFixture(swordfixture);
+            mainBody.getBody().destroyFixture(swordfixture);
             swordfixture = null;
             sword = null;
         }
@@ -292,7 +291,7 @@ public class Player extends Sprite {
         if (Hud.getHealth() <= 0){
             playerDied();
         }else{
-        b2body.applyLinearImpulse(new Vector2(0,2f),b2body.getWorldCenter(),true);
+            mainBody.getBody().applyLinearImpulse(new Vector2(0,2f),mainBody.getBody().getWorldCenter(),true);
         }
     }
 
@@ -324,6 +323,10 @@ public class Player extends Sprite {
     public void chopThatTree() {
         screen.setDialog(4);
         currentState = State.WINNING ;
+    }
+
+    public Body getMainBody(){
+        return mainBody.getBody();
     }
 
 }

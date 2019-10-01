@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Screens.PlayScreen;
 
 public abstract class Enemy extends Sprite {
@@ -11,9 +12,9 @@ public abstract class Enemy extends Sprite {
     public enum State {WALKING, ATTACKING, JUMPING, HURT, DIEING}
     protected World world;
     protected PlayScreen screen;
-    public Body body;
+    //public Body body;
     public Vector2 velocity;
-
+    protected CustomBody mainBody;
     protected boolean setToDestroy;
     public boolean isDestroyed;
     protected boolean toBedeleted;
@@ -24,7 +25,7 @@ public abstract class Enemy extends Sprite {
         setPosition(x,y);
         create2dBoxEnemy();
         velocity = new Vector2(1f,0);
-        body.setActive(true);
+        mainBody.getBody().setActive(true);
     }
 
     public abstract int dmgAmount();

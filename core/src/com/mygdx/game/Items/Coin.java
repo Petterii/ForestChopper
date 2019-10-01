@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Screens.PlayScreen;
 
 import java.util.Random;
@@ -56,27 +57,27 @@ public class Coin extends Items {
 
     @Override
     protected void createBox2dItem() {
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(getX(),getY());
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
+        int radius = 3;
 
-        FixtureDef fdef = new FixtureDef();
-        //fdef.friction = 0f;
-        fdef.density = 0f;
-        fdef.restitution = 0f;
-        CircleShape shape = new CircleShape();
-        shape.setRadius(3/PPM);
-        fdef.filter.categoryBits = ITEM_BIT;
-        fdef.filter.maskBits = GROUND_BIT | PLAYER_BIT | OBJECT_BIT | WALL_BIT | ENEMYWALLS_BIT;
+        mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
+        mainBody.finilizeCollision((short)(GROUND_BIT | OBJECT_BIT | WALL_BIT | ENEMYWALLS_BIT),(short)ITEM_BIT);
+        mainBody.finalize(this);
 
-        fdef.shape = shape;
-
-        body.createFixture(fdef).setUserData(this);
         Random r = new Random();
         float x = (r.nextInt(200)-100)*0.01f;
-        body.applyLinearImpulse(new Vector2(x,3f),body.getWorldCenter(),true);
-        shape.dispose();
+        float y = (r.nextInt(100))*0.05f;
+        mainBody.getBody().applyLinearImpulse(new Vector2(x,y),mainBody.getBody().getWorldCenter(),true);
+
+        triggerBox2dCoin();
+    }
+    private CustomBody triggerBody;
+
+    protected void triggerBox2dCoin(){
+        int radius = 3;
+        triggerBody = new CustomBody(mainBody.getBody(),getX(),getY(), CustomBody.BodyType.STATICBODY,radius,true);
+
+        triggerBody.finilizeCollision((short)PLAYER_BIT,(short)ITEM_BIT);
+        triggerBody.finalize(this);
     }
 
     @Override
@@ -96,17 +97,17 @@ public class Coin extends Items {
     public void update(float dt) {
         if (create){
             createBox2dItem();
-            body.setActive(true);
+            mainBody.getBody().setActive(true);
             create = false;
         }
         if (setTodestroy){
             setTodestroy = false;
             destroyed = true;
-            world.destroyBody(body);
+            world.destroyBody(mainBody.getBody());
 
         }else{
         stateTime += dt;
-        setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() /2);
+        setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() /2);
         setRegion(getFrame(dt));
         }
     }

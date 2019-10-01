@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
+import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Items.Coin;
 import com.mygdx.game.Screens.Hud;
 import com.mygdx.game.Screens.PlayScreen;
@@ -102,8 +103,16 @@ public class Screecher extends Enemy {
         return DMG_AMOUNT;
     }
 
+    // private CustomBody mainBody;
     @Override
     protected void create2dBoxEnemy() {
+        int x,y,radius;
+        radius = 15;
+        mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
+        mainBody.finilizeCollision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
+        mainBody.finalize(this);
+
+        /*
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(),getY());
         bdef.type = BodyDef.BodyType.DynamicBody;
@@ -119,6 +128,7 @@ public class Screecher extends Enemy {
         body.createFixture(fdef).setUserData(this);
 
         shape.dispose();
+        */
     }
 
     @Override
@@ -143,11 +153,11 @@ public class Screecher extends Enemy {
 
         if (currentState == State.ATTACKING)
             return State.ATTACKING;
-        else if (body.getLinearVelocity().y > 0 || (body.getLinearVelocity().y < 0 && previousState == State.JUMPING))
+        else if (mainBody.getBody().getLinearVelocity().y > 0 || (mainBody.getBody().getLinearVelocity().y < 0 && previousState == State.JUMPING))
             return State.JUMPING;
-        else if (body.getLinearVelocity().y < 0)
+        else if (mainBody.getBody().getLinearVelocity().y < 0)
             return State.WALKING;
-        else if (body.getLinearVelocity().x != 0)
+        else if (mainBody.getBody().getLinearVelocity().x != 0)
             return State.WALKING;
 
 
@@ -179,12 +189,12 @@ public class Screecher extends Enemy {
                 break;
         }
 
-        if ((body.getLinearVelocity().x < 0 || !walkingRight) && !region.isFlipX())
+        if ((mainBody.getBody().getLinearVelocity().x < 0 || !walkingRight) && !region.isFlipX())
         {
             region.flip(true,false);
             walkingRight = false;
         }
-        else if ((body.getLinearVelocity().x > 0 || walkingRight) && region.isFlipX()){
+        else if ((mainBody.getBody().getLinearVelocity().x > 0 || walkingRight) && region.isFlipX()){
             region.flip(true,false);
             walkingRight = true;
         }
@@ -202,7 +212,7 @@ public class Screecher extends Enemy {
             // need to have it like this so death animation is shown.
             if (!isDestroyed){
                 Hud.addScore(20);
-                world.destroyBody(body);
+                world.destroyBody(mainBody.getBody());
                 isDestroyed = true;
             }
 
@@ -213,8 +223,8 @@ public class Screecher extends Enemy {
                 toBedeleted = true;
 
         }else if(!isDestroyed){
-            body.setLinearVelocity(velocity);
-            setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() /2);
+            mainBody.getBody().setLinearVelocity(velocity);
+            setPosition(mainBody.getBody().getPosition().x - getWidth() / 2, mainBody.getBody().getPosition().y - getHeight() /2);
             setRegion(getFrame(dt));
         }
 
@@ -234,8 +244,8 @@ public class Screecher extends Enemy {
         velocity.x = 0;
         stateTime = 0;
         hp -= 30;
-        float xForce = screen.getPlayer().b2body.getPosition().x < body.getPosition().x ? 2 : -2;
-        body.applyLinearImpulse(new Vector2(xForce,2f),body.getWorldCenter(),true);
+        float xForce = screen.getPlayer().getMainBody().getPosition().x < mainBody.getBody().getPosition().x ? 2 : -2;
+        mainBody.getBody().applyLinearImpulse(new Vector2(xForce,2f),mainBody.getBody().getWorldCenter(),true);
         stateTime = 0;
         animateBlood = true;
 
