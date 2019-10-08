@@ -27,20 +27,22 @@ public class WorldContactListener implements ContactListener {
 
         int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-        switch (cDef){
+        switch (cDef) {
             case ITEM_BIT | PLAYER_BIT:
                 if (fixA.getFilterData().categoryBits == PLAYER_BIT) {
 
                     ((Player) fixA.getUserData()).collectItem(((Items) fixB.getUserData()).collectItem());
-                }
-                else
+                } else
                     ((Player) fixB.getUserData()).collectItem(((Items) fixA.getUserData()).collectItem());
                 break;
             case ENEMY_BIT | PLAYERSWORD_BIT:
-                if (fixA.getFilterData().categoryBits == ENEMY_BIT)
+                if (fixA.getFilterData().categoryBits == ENEMY_BIT) {
                     ((Enemy) fixA.getUserData()).gotHit();
-                else
+                    ((Player) fixB.getUserData()).retracktSwing();
+                } else {
+                    ((Player) fixA.getUserData()).retracktSwing();
                     ((Enemy) fixB.getUserData()).gotHit();
+                }
                 break;
             case ENEMY_BIT | WALL_BIT:
                 if (fixA.getFilterData().categoryBits == ENEMY_BIT)

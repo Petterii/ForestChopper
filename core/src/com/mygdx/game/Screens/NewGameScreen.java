@@ -99,6 +99,8 @@ public class NewGameScreen implements Screen {
                 dispose();
             }
             else {
+
+                //game.setScreen(new TestScreen((ForestChopper) game));
                 game.setScreen(new PlayScreen((ForestChopper) game,"tile/smaller_map_60.tmx"));
                 //game.setScreen(new LevelPickerScreen((ForestChopper) game));
                 dispose();

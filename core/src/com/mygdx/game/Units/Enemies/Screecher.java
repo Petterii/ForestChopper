@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Items.Coin;
@@ -27,7 +24,6 @@ import static com.mygdx.game.ForestChopper.PLAYER_BIT;
 import static com.mygdx.game.ForestChopper.PPM;
 import static com.mygdx.game.ForestChopper.WALL_BIT;
 import static com.mygdx.game.Screens.PlayScreen.SOUND_DAMAGE2;
-import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKDIEINGSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKHURT;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKSPRITESHEET;
@@ -107,28 +103,11 @@ public class Screecher extends Enemy {
     @Override
     protected void create2dBoxEnemy() {
         int x,y,radius;
-        radius = 15;
+        radius = 10;
         mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
-        mainBody.finilizeCollision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
-        mainBody.finalize(this);
+        mainBody.Collision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
+        mainBody.Finalize(this);
 
-        /*
-        BodyDef bdef = new BodyDef();
-        bdef.position.set(getX(),getY());
-        bdef.type = BodyDef.BodyType.DynamicBody;
-        body = world.createBody(bdef);
-
-        FixtureDef fdef = new FixtureDef();
-        CircleShape shape = new CircleShape();
-        shape.setRadius(15/PPM);
-        fdef.filter.categoryBits = ENEMY_BIT;
-        fdef.filter.maskBits = GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT;
-
-        fdef.shape = shape;
-        body.createFixture(fdef).setUserData(this);
-
-        shape.dispose();
-        */
     }
 
     @Override

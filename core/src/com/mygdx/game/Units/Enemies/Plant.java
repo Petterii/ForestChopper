@@ -5,10 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Items.Coin;
@@ -28,10 +24,6 @@ import static com.mygdx.game.Screens.PlayScreen.SOUND_DAMAGE2;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTDIEINGSPRITESHEET;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTHURT;
 import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ENEMYPLANTSPRITESHEET;
-import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKDIEINGSPRITESHEET;
-import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKHURT;
-import static com.mygdx.game.Screens.PlayScreen.TEXTURE_ORKSPRITESHEET;
-import static com.mygdx.game.Screens.PlayScreen.TEXTURE_PLAYERHURT;
 
 public class Plant extends Enemy {
     private State currentState;
@@ -98,8 +90,8 @@ public class Plant extends Enemy {
         int x,y,radius;
         radius = 15;
         mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
-        mainBody.finilizeCollision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
-        mainBody.finalize(this);
+        mainBody.Collision((short)(GROUND_BIT | PLAYER_BIT | OBJECT_BIT | PLAYERSWORD_BIT | WALL_BIT | ENEMYWALLS_BIT),ENEMY_BIT);
+        mainBody.Finalize(this);
         /*
         BodyDef bdef = new BodyDef();
         bdef.position.set(getX(),getY());

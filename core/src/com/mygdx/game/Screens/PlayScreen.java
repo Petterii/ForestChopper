@@ -15,7 +15,11 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -178,6 +182,8 @@ public class PlayScreen implements Screen{
         NextDialog();
     }
 
+    private Body swordBody;
+
     private ChatBubble leftChat;
     private ChatBubble rightChat;
 
@@ -254,13 +260,15 @@ public class PlayScreen implements Screen{
         //b2dr.render(world,gamecam.combined);
 
         game.batch.setProjectionMatrix(gamecam.combined);
+
         game.batch.begin();
         player.draw(game.batch);
+
         for (Enemy enemy : enemies) {
             if (!enemy.isToBedeleted()) enemy.draw(game.batch);
         }
         for (Items item : items) {
-            if (!item.destroyed) item.draw(game.batch);
+           if (!item.destroyed) item.draw(game.batch);
         }
 
         game.batch.end();
@@ -269,6 +277,8 @@ public class PlayScreen implements Screen{
        // drawing the UI buttons
         hudBatch.setProjectionMatrix(hudCam.combined);
         hudBatch.begin();
+        //hudBatch.draw(player.swordTexture,player.getMainBody().getPosition().x*PPM,player.getMainBody().getPosition().y*PPM);
+
         hudBatch.draw(leftButton,0,0);
         hudBatch.draw(rightButton,rightButton.getWidth()*2,0);
         hudBatch.draw(attackIcon,V_WIDTH - (attackIcon.getWidth()*2),attackIcon.getHeight());

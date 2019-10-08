@@ -6,9 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.Helpers.CustomBody;
 import com.mygdx.game.Screens.PlayScreen;
@@ -60,8 +57,8 @@ public class Coin extends Items {
         int radius = 3;
 
         mainBody = new CustomBody(world,getX(),getY(), CustomBody.BodyType.DYNAMICBODY,radius);
-        mainBody.finilizeCollision((short)(GROUND_BIT | OBJECT_BIT | WALL_BIT | ENEMYWALLS_BIT),(short)ITEM_BIT);
-        mainBody.finalize(this);
+        mainBody.Collision((short)(GROUND_BIT | OBJECT_BIT | WALL_BIT | ENEMYWALLS_BIT),(short)ITEM_BIT);
+        mainBody.Finalize(this);
 
         Random r = new Random();
         float x = (r.nextInt(200)-100)*0.01f;
@@ -76,8 +73,8 @@ public class Coin extends Items {
         int radius = 3;
         triggerBody = new CustomBody(mainBody.getBody(),getX(),getY(), CustomBody.BodyType.STATICBODY,radius,true);
 
-        triggerBody.finilizeCollision((short)PLAYER_BIT,(short)ITEM_BIT);
-        triggerBody.finalize(this);
+        triggerBody.Collision((short)PLAYER_BIT,(short)ITEM_BIT);
+        triggerBody.Finalize(this);
     }
 
     @Override
